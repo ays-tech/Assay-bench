@@ -115,7 +115,8 @@ async function trackActivity() {
   let since = 0;
   let idle = 0;
   try {
-    for (;;) {
+    // Closing the panel only hides the feed; the run carries on and its own status line still reports it.
+    while (!activity.dismissed()) {
       const snap = await (await fetch(`/api/activity?since=${since}`)).json();
       since = snap.seq;
       if (snap.startedAt === null) {

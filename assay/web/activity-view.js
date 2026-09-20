@@ -22,15 +22,17 @@ function avBar(kind) {
 
 /**
  * @param {HTMLElement} root the (initially hidden) container
- * @returns {{update: (snapshot: any) => void, reset: () => void}}
+ * @returns {{update: (snapshot: any) => void, reset: () => void, dismissed: () => boolean}}
  */
 export function createActivityPanel(root) {
   /** @type {any[]} */
   let recent = [];
+  // Set when the user closes the panel; it stays closed (and the caller stops polling) until the next run.
+  let dismissed = false;
 
   const title = h('h2', { class: 'av-title' }, '');
   const clock = h('span', { class: 'av-clock' }, '0:00');
-  const hide = h('button', { class: 'av-hide', type: 'button', 'aria-label': 'Hide live activity', onClick: () => { root.hidden = true; } }, '×');
+  const hide = h('button', { class: 'av-hide', type: 'button', 'aria-label': 'Hide live activity', onClick: () => { dismissed = true; root.hidden = true; } }, '×');
   const summary = h('p', { class: 'av-summary' }, '');
 
   const catalogValue = h('b', {}, '$0');
@@ -65,11 +67,14 @@ export function createActivityPanel(root) {
       clear(scores);
       scoresBox.hidden = true;
       lastState = '';
+      dismissed = false;
       root.hidden = true;
     },
 
+    dismissed: () => dismissed,
+
     update(snap) {
-      if (snap.startedAt === null) return;
+      if (snap.startedAt === null || dismissed) return;
       const finished = !snap.active;
       root.hidden = false;
       root.dataset.state = finished ? 'done' : 'live';
