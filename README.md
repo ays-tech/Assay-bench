@@ -2,7 +2,7 @@
 
 **Verify the gateway. Then pick the model.**
 
-![Assay overview](public/img/assay-overview.png)
+![Assay overview](assay/public/img/assay-overview.png)
 
 Assay is two tools in one dashboard, for people buying inference through the [Orbio](https://orbio.so) gateway.
 
@@ -61,7 +61,7 @@ accepted as a command-line flag, so it stays out of your shell history.
 
 ## Audit
 
-![Audit verdict and fineness stamp](public/img/assay-audit.png)
+![Audit verdict and fineness stamp](assay/public/img/assay-audit.png)
 
 The agent reads your balance and the model catalog, picks the cheapest viable model from several
 vendors, proves each one can answer, spends a few cents on fixed public prompts, and compares what the
@@ -78,7 +78,7 @@ counts as a failure.
 | `auth` | 5 | Credentials enforced | An invalid key must get 401/403. |
 | `catalog` | 5 | Catalog is sane | Unique ids, finite non-negative prices, price-unit detection, and a preflight call to every audit model. |
 
-![Checks ledger and evidence](public/img/assay-audit-2.png)
+![Checks ledger and evidence](assay/public/img/assay-audit-2.png)
 
 **Fineness** = `1000 × Σ(weight × points) / Σ(weight)` over the checks that ran (pass 1, warn ½, fail 0).
 A failure in `billing`, `tokens`, `identity` or `auth` caps the score at 600. **Coverage** is always shown,
@@ -90,7 +90,7 @@ contains any number not present in the evidence**.
 
 ## Bench
 
-![Bench verdict, margin control and results table](public/img/assay-bench.png)
+![Bench verdict, margin control and results table](assay/public/img/assay-bench.png)
 
 Most teams choose one model and never revisit it. Bench automates the comparison:
 
@@ -136,7 +136,7 @@ is the reference: a candidate must be at least as good.
 
 ## Estimator
 
-![Savings estimator](public/img/assay-estimator.png)
+![Savings estimator](assay/public/img/assay-estimator.png)
 
 Billing is metered at catalog rate. The discount is earned when you **buy** credit, and Orbio adds a 5% fee
 on the discounted price, so the headline is not what you keep:
@@ -209,8 +209,6 @@ src/mock/             fault injection          web/                dashboard (HT
 examples/             sample prompts           public/img/         screenshots used in this README
 web/pricing.js, web/recommend.js               shared by the CLI and the browser
 ```
-
-Full spec, architecture and design decisions: [`PRODUCT.md`](PRODUCT.md).
 
 ## Limits
 
