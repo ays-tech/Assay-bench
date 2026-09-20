@@ -1,9 +1,9 @@
 {
   "schema": "assay.bench/1",
-  "id": "2026-09-20T15-19-45-517Z",
-  "startedAt": "2026-09-20T15:19:45.517Z",
-  "finishedAt": "2026-09-20T15:20:14.601Z",
-  "durationMs": 29084,
+  "id": "2026-09-20T15-16-19-414Z",
+  "startedAt": "2026-09-20T15:16:19.414Z",
+  "finishedAt": "2026-09-20T15:16:48.509Z",
+  "durationMs": 29095,
   "tool": {
     "name": "assay",
     "version": "0.1.0"
@@ -26,11 +26,11 @@
   },
   "trust": {
     "audit": {
-      "id": "2026-09-20T15-18-45-536Z",
+      "id": "2026-09-20T15-15-35-757Z",
       "fineness": 600,
       "grade": "Concerns",
       "coverage": 0.9,
-      "at": "2026-09-20T15:18:47.349Z",
+      "at": "2026-09-20T15:15:37.557Z",
       "headline": "Orbio billed above the catalog price."
     },
     "billing": {
@@ -59,7 +59,7 @@
         "hi": 1
       },
       "latencyP50Ms": 15,
-      "latencyP95Ms": 23,
+      "latencyP95Ms": 18,
       "avgPromptTokens": 135,
       "avgCompletionTokens": 22,
       "judge": null,
@@ -110,7 +110,7 @@
         "hi": 1
       },
       "latencyP50Ms": 15,
-      "latencyP95Ms": 22,
+      "latencyP95Ms": 19,
       "avgPromptTokens": 142,
       "avgCompletionTokens": 24,
       "judge": {
@@ -169,8 +169,8 @@
         "lo": 0.43333333333333335,
         "hi": 0.7714285714285715
       },
-      "latencyP50Ms": 15,
-      "latencyP95Ms": 24,
+      "latencyP50Ms": 16,
+      "latencyP95Ms": 18,
       "avgPromptTokens": 135,
       "avgCompletionTokens": 19,
       "judge": {
@@ -230,7 +230,7 @@
         "hi": 1
       },
       "latencyP50Ms": 15,
-      "latencyP95Ms": 19,
+      "latencyP95Ms": 17,
       "avgPromptTokens": 129,
       "avgCompletionTokens": 21,
       "judge": {
@@ -290,7 +290,7 @@
         "hi": 0.6285714285714286
       },
       "latencyP50Ms": 15,
-      "latencyP95Ms": 22,
+      "latencyP95Ms": 18,
       "avgPromptTokens": 138,
       "avgCompletionTokens": 10,
       "judge": {

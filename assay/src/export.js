@@ -34,7 +34,7 @@ export function buildStaticHtml({ report, bench = null, history = [], catalog = 
   let html = read('index.html');
   const css = read('app.css');
   // One classic <script> scope, in dependency order.
-  const script = `(() => {\n${['dom.js', 'pricing.js', 'recommend.js', 'bench-view.js', 'home-view.js', 'app.js'].map((f) => stripModuleSyntax(read(f))).join('\n')}\n})();`;
+  const script = `(() => {\n${['dom.js', 'pricing.js', 'recommend.js', 'bench-view.js', 'home-view.js', 'activity-view.js', 'app.js'].map((f) => stripModuleSyntax(read(f))).join('\n')}\n})();`;
 
   const safeReport = report ? { ...report } : null;
   if (safeReport && isPublic) delete safeReport.keyFingerprint;

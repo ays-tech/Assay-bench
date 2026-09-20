@@ -5,6 +5,7 @@ import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createDashboardServer, isAllowedHost, CSP } from '../src/server.js';
+import { createActivityFeed } from '../src/activity.js';
 import { createStore } from '../src/store.js';
 import { buildStaticHtml, stripModuleSyntax, jsonForScript } from '../src/export.js';
 import { auditMock } from './helpers.js';
@@ -260,5 +261,44 @@ test('an opaque Origin ("null") is refused with 403 on the audit endpoint too, n
   await withServer({ runner: async () => ({ report: {}, catalog: null }) }, async ({ port }) => {
     const res = await post(port, '/api/run', {}, { Origin: 'null' });
     assert.equal(res.status, 403);
+  });
+});
+
+/* ---------- live activity ---------- */
+
+test('GET /api/activity is an inactive snapshot with no feed, and the running feed with one', async () => {
+  await withServer({}, async ({ port }) => {
+    const snap = await (await fetch(`http://127.0.0.1:${port}/api/activity`)).json();
+    assert.equal(snap.active, false);
+    assert.deepEqual(snap.events, []);
+  });
+
+  const feed = createActivityFeed();
+  await withServer({ feed }, async ({ port }) => {
+    feed.begin('bench');
+    feed.onCall({ tag: 'shadow', source: 'gateway', model: 'a/b', ok: true, status: 200, promptTokens: 9, completionTokens: 3, expectedCost: 8_000_000_000_000n, latencyMs: 55, finishReason: 'stop' });
+    feed.onCall({ tag: 'shadow', source: 'gateway', model: 'c/d', ok: true, status: 200, promptTokens: 9, completionTokens: 3, expectedCost: 8_000_000_000_000n, latencyMs: 61, finishReason: 'stop' });
+    const get = async (q = '') => (await fetch(`http://127.0.0.1:${port}/api/activity${q}`)).json();
+
+    const all = await get();
+    assert.equal(all.active, true);
+    assert.equal(all.events.length, 2);
+    assert.deepEqual((await get('?since=1')).events.map((e) => e.n), [2]);
+    for (const junk of ['?since=abc', '?since=-5', '?since=1e9', '?since=']) assert.equal((await get(junk)).events.length >= 0, true, `${junk} is handled, not a crash`);
+    assert.equal((await get('?since=abc')).events.length, 2, 'a malformed cursor means "from the start"');
+    feed.end();
+    assert.equal((await get()).active, false);
+  });
+});
+
+test('the activity endpoint sits behind the same loopback guard as everything else', async () => {
+  const feed = createActivityFeed();
+  await withServer({ feed }, async ({ port }) => {
+    const status = await new Promise((resolve, reject) => {
+      const req = http.request({ host: '127.0.0.1', port, path: '/api/activity', method: 'GET', headers: { Host: 'evil.example' } }, (res) => { res.resume(); res.on('end', () => resolve(res.statusCode)); });
+      req.on('error', reject);
+      req.end();
+    });
+    assert.equal(status, 403);
   });
 });

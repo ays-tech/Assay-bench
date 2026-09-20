@@ -30,7 +30,7 @@ const bvPts = (fraction) => `${fraction >= 0 ? '+' : '−'}${Math.abs(fraction *
 
 /**
  * @param {HTMLElement} root
- * @param {{state: any, refresh: () => Promise<void>, rerender: () => void, pricing: () => {discount:number, fee:number}, openInEstimator: (rows: any[]) => void}} api
+ * @param {{state: any, refresh: () => Promise<void>, rerender: () => void, trackActivity?: () => Promise<void>, pricing: () => {discount:number, fee:number}, openInEstimator: (rows: any[]) => void}} api
  */
 export function renderBenchView(root, api) {
   clear(root);
@@ -140,7 +140,7 @@ function bvTable(bench, rec) {
       h('td', {}, isCurrent ? '100%' : q ? `${(q.est * 100).toFixed(0)}% ±${(((q.hi - q.lo) / 2) * 100).toFixed(0)}` : '—',
         h('small', {}, `${(m.accuracy * 100).toFixed(0)}% correct (${m.correct}/${m.n})`)),
       h('td', {}, typeof m.costPerCorrect1kUsd === 'number' ? fmtUsd(m.costPerCorrect1kUsd) : '—', bar(m.costPerCorrect1kUsd)),
-      h('td', {}, bvChip(verdict), needed && h('small', {}, `about ${needed} prompts would settle it`), m.errorRate > 0 && h('small', {}, `${(m.errorRate * 100).toFixed(0)}% of calls failed`)));
+      h('td', {}, bvChip(verdict), needed && h('small', {}, `about ${needed} prompts would settle it`), m.errorRate > 0 && h('small', {}, `${(m.errorRate * 100).toFixed(0)}% of calls failed`), m.cutOff > 0 && h('small', {}, `${m.cutOff} empty or cut off`)));
   });
 
   const spent = Number(bench.spend.actualUsd ?? bench.spend.expectedUsd);
@@ -327,6 +327,7 @@ function bvRunCard(api) {
       const res = await fetch('/api/bench/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const reply = await res.json().catch(() => ({}));
       if (!res.ok && res.status !== 409) throw new Error(reply.error ?? `HTTP ${res.status}`);
+      api.trackActivity?.();
       for (;;) {
         const st = await (await fetch('/api/bench/status')).json();
         status.textContent = st.error ? `Benchmark failed: ${st.error}` : st.message;

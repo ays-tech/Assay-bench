@@ -27,6 +27,34 @@ const TOOL = {
 };
 export { TOOL as WEATHER_TOOL };
 
+/** Tell a live listener about a finished call. A listener must never be able to break a run. */
+function emit(ctx, record) {
+  try {
+    ctx.onCall?.(record);
+  } catch { /* ignore */ }
+}
+
+/**
+ * Tell the live feed about a paid call made outside `probeChat` (the streaming and tool-call probes,
+ * the narrative). It does NOT add to the audit's evidence records, which the checks read. It exists so
+ * the feed's "catalog says" total accounts for every call that can move the balance.
+ *
+ * @param {any} ctx
+ * @param {import('./catalog.js').CatalogModel} model
+ * @param {{tag: string, ok: boolean, status?: number, usage?: any, latencyMs?: number, error?: string|null}} call
+ */
+export function announceCall(ctx, model, { tag, ok, status = 200, usage = null, latencyMs = 0, error = null }) {
+  const int = (v) => (Number.isInteger(v) ? v : null);
+  const promptTokens = int(usage?.prompt_tokens);
+  const completionTokens = int(usage?.completion_tokens);
+  const priced = model.promptPrice !== null && model.completionPrice !== null;
+  emit(ctx, {
+    tag, source: 'gateway', model: model.id, ok, status, promptTokens, completionTokens,
+    expectedCost: ok && priced && promptTokens !== null && completionTokens !== null ? model.promptPrice * BigInt(promptTokens) + model.completionPrice * BigInt(completionTokens) : null,
+    latencyMs, finishReason: null, error,
+  });
+}
+
 /** Chat content is a string, or (for some providers) an array of typed parts. @param {any} content */
 function messageText(content) {
   if (typeof content === 'string') return content;
@@ -98,6 +126,7 @@ export async function probeChat(ctx, model, { prompt, messages, maxTokens, tag, 
     record.error = err.message;
     settle(null);
     ctx.records.push(record);
+  emit(ctx, record);
     return record;
   }
 
@@ -114,6 +143,7 @@ export async function probeChat(ctx, model, { prompt, messages, maxTokens, tag, 
     // A 4xx is rejected before any model runs, so it cannot have been billed; a 5xx might have been.
     settle(res.status >= 400 && res.status < 500 ? 0n : null);
     ctx.records.push(record);
+  emit(ctx, record);
     return record;
   }
 
@@ -133,5 +163,6 @@ export async function probeChat(ctx, model, { prompt, messages, maxTokens, tag, 
   }
   settle(record.expectedCost ?? worst);
   ctx.records.push(record);
+  emit(ctx, record);
   return record;
 }

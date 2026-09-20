@@ -4,7 +4,10 @@ import {
 import { h, s, $, clear } from './dom.js';
 import { renderBenchView } from './bench-view.js';
 import { renderHome } from './home-view.js';
+import { createActivityPanel } from './activity-view.js';
 
+let activity = null;
+let tracking = false;
 const state = { report: null, history: [], catalog: [], canRun: false, static: false, generatedAt: null, bench: null, canBench: false, datasets: [] };
 
 const STATUS_WORD = { pass: 'Verified', warn: 'Review', fail: 'Failed', skip: 'Not run', info: 'Measured' };
@@ -26,6 +29,7 @@ async function boot() {
   const runBtn = $('#run-btn');
   runBtn.addEventListener('click', startRun);
   loadEst();
+  activity = createActivityPanel($('#activity'));
   window.addEventListener('hashchange', () => route(true));
   if (state.static) {
     $('#foot-note').textContent = `Static scorecard generated ${new Date(state.generatedAt ?? Date.now()).toLocaleString()}. Assay is an independent tool built for the Orbio agent hackathon; it is not operated by Orbio.`;
@@ -73,7 +77,7 @@ function renderAll() {
   renderEvidence();
   renderEstimator();
   renderBenchView($('#bench-root'), {
-    state, refresh, rerender: renderAll,
+    state, refresh, rerender: renderAll, trackActivity,
     pricing: () => ({ discount: est.discountPct / 100, fee: est.feePct / 100 }),
     openInEstimator,
   });
@@ -98,6 +102,35 @@ function openInEstimator(rows) {
   renderEstimator();
 }
 
+/* ---------- live activity ---------- */
+
+/**
+ * Follow the running audit or benchmark in the docked panel until it finishes. The feed is a
+ * nicety: if it fails for any reason the run itself carries on untouched.
+ */
+async function trackActivity() {
+  if (state.static || tracking || !activity) return;
+  tracking = true;
+  activity.reset();
+  let since = 0;
+  let idle = 0;
+  try {
+    for (;;) {
+      const snap = await (await fetch(`/api/activity?since=${since}`)).json();
+      since = snap.seq;
+      if (snap.startedAt === null) {
+        if (++idle >= 3) break; // nothing is running
+      } else {
+        activity.update(snap);
+        if (!snap.active) break;
+      }
+      await new Promise((r) => setTimeout(r, 500));
+    }
+  } catch { /* ignore */ } finally {
+    tracking = false;
+  }
+}
+
 /* ---------- running an audit ---------- */
 
 function setStatus(message, isError = false) {
@@ -115,6 +148,7 @@ async function startRun() {
     const res = await fetch('/api/run', { method: 'POST' });
     const body = await res.json().catch(() => ({}));
     if (!res.ok && res.status !== 409) throw new Error(body.error ?? `HTTP ${res.status}`);
+    trackActivity();
     await pollRun();
     await refresh();
     renderAll();

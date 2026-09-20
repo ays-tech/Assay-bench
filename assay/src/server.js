@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { toPriced } from './estimate/index.js';
 import { BenchError } from './bench/run.js';
 import { listDatasets, validateBenchParams } from './bench/service.js';
+import { emptySnapshot } from './activity.js';
 
 const WEB_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'web');
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8' };
@@ -38,6 +39,7 @@ export function isAllowedHost(host) {
  * @property {ReturnType<import('./store.js').createStore>} store
  * @property {((onProgress: (e: any) => void) => Promise<{report:any, catalog:any}>)|null} [runner]  starts an audit; null disables the Run button
  * @property {((params: any, onProgress: (e: any) => void) => Promise<{report: any}>)|null} [benchRunner]  runs (and saves) a benchmark; null disables it
+ * @property {ReturnType<typeof import('./activity.js').createActivityFeed>|null} [feed]  live activity of the running audit or benchmark
  * @property {(() => Promise<any[]|null>)|null} [liveCatalog]  fetches priced models from the gateway
  * @property {string} [webDir]
  */
@@ -46,7 +48,7 @@ export function isAllowedHost(host) {
  * Local dashboard: static assets plus a tiny JSON API. The gateway key never leaves this process.
  * @param {DashboardOptions} opts
  */
-export function createDashboardServer({ store, runner = null, benchRunner = null, liveCatalog = null, webDir = WEB_DIR }) {
+export function createDashboardServer({ store, runner = null, benchRunner = null, feed = null, liveCatalog = null, webDir = WEB_DIR }) {
   const run = { running: false, message: 'Idle', phase: 'idle', error: /** @type {string|null} */ (null), startedAt: /** @type {number|null} */ (null) };
   const bench = { running: false, phase: 'idle', message: 'Idle', done: 0, total: 0, error: /** @type {string|null} */ (null) };
   let catalogCache = /** @type {{at:number, models:any[]}|null} */ (null);
@@ -155,6 +157,10 @@ export function createDashboardServer({ store, runner = null, benchRunner = null
         return send(res, 202, { started: true });
       }
       if (url.pathname === '/api/bench/status' && req.method === 'GET') return send(res, 200, bench);
+      if (url.pathname === '/api/activity' && req.method === 'GET') {
+        const since = Number.parseInt(url.searchParams.get('since') ?? '0', 10);
+        return send(res, 200, feed ? feed.snapshot(Number.isFinite(since) && since > 0 ? since : 0) : emptySnapshot());
+      }
       if (url.pathname === '/api/run' && req.method === 'POST') {
         if (!runner) return send(res, 501, { error: 'No API key configured. Set ORBIO_API_KEY and restart `assay serve`.' });
         if (run.running) return send(res, 409, { error: 'An audit is already running.' });

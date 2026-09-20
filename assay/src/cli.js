@@ -16,6 +16,7 @@ import { DatasetError, loadDataset } from './bench/dataset.js';
 import { BenchError } from './bench/run.js';
 import { SAMPLE_PATH, listDatasets, runBenchJob, validateBenchParams } from './bench/service.js';
 import { createBenchResponder } from './mock/bench-responder.js';
+import { createActivityFeed, withFeed } from './activity.js';
 
 /** Exit codes. */
 export const EXIT = { OK: 0, BELOW_THRESHOLD: 1, USAGE: 2, RUNTIME: 3 };
@@ -197,8 +198,8 @@ async function notify(url, report, failing, reason, err) {
 
 /* ---------- serve / export ---------- */
 
-function dashboardFor(config, store, { runner, benchRunner = null, liveCatalog }) {
-  return createDashboardServer({ store, runner, benchRunner, liveCatalog });
+function dashboardFor(config, store, { runner, benchRunner = null, feed = null, liveCatalog }) {
+  return createDashboardServer({ store, runner, benchRunner, feed, liveCatalog });
 }
 
 async function cmdServe(args, { out, err, env }) {
@@ -210,9 +211,11 @@ async function cmdServe(args, { out, err, env }) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new ConfigError('--port must be 0–65535');
 
   const client = config.apiKey ? new OrbioClient({ baseUrl: config.baseUrl, apiKey: config.apiKey, timeoutMs: config.timeoutMs, label: 'Orbio' }) : null;
+  const feed = createActivityFeed({ redact: (t) => redact(t, [config.apiKey]) });
   const dash = dashboardFor(config, store, {
-    runner: config.apiKey ? (onProgress) => runAudit({ config, onProgress }) : null,
-    benchRunner: client ? (params, onProgress) => runBenchJob({ config, client, store, params, onProgress }) : null,
+    feed,
+    runner: config.apiKey ? (onProgress) => withFeed(feed, 'audit', client, (hooks) => runAudit({ config, onProgress, onCall: hooks.onCall })) : null,
+    benchRunner: client ? (params, onProgress) => withFeed(feed, 'bench', client, (hooks) => runBenchJob({ config, client, store, params, onProgress, ...hooks })) : null,
     liveCatalog: client
       ? async () => {
           const res = await client.get('/models');
@@ -435,9 +438,12 @@ async function cmdDemo(args, { out, err, env }) {
     }
     if (!values.serve) return EXIT.OK;
 
+    const feed = createActivityFeed();
     const dash = dashboardFor(base, store, {
-      runner: (onProgress) => runAudit({ config: base, onProgress }),
-      benchRunner: (params, onProgress) => runBenchJob({ config: base, client, store, params: { ...params, rpm: 0, concurrency: 6 }, onProgress }),
+      feed,
+      runner: (onProgress) => withFeed(feed, 'audit', client, (hooks) => runAudit({ config: base, onProgress, onCall: hooks.onCall })),
+      // Paced at 8 calls a second so the live feed is watchable; a real gateway is slower than this anyway.
+      benchRunner: (params, onProgress) => withFeed(feed, 'bench', client, (hooks) => runBenchJob({ config: base, client, store, params: { ...params, rpm: 480, concurrency: 4 }, onProgress, ...hooks })),
       liveCatalog: null,
     });
     const addr = await dash.listen(values.port === undefined ? 4477 : Number(values.port));

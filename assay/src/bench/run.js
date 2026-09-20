@@ -86,6 +86,8 @@ const callUsd = (m, promptTokens, completionTokens) => num(m.promptPrice) * prom
  * @property {boolean} [dryRun]                     plan and estimate only, spend nothing
  * @property {any} [auditSummary]                   latest Assay audit of this gateway, embedded as trust context
  * @property {(e: {phase: string, message: string, done?: number, total?: number}) => void} [onProgress]
+ * @property {(record: import('../probe.js').CallRecord) => void} [onCall]     told about every gateway call as it finishes
+ * @property {(a: {model: string, correct: boolean|null}) => void} [onAnswer]  told as each answer is checked; null = a judge decides later
  */
 
 /**
@@ -96,7 +98,7 @@ export async function runBench(opts) {
   const {
     config, client, datasetName, current: currentId, candidates = 'auto', judge: judgeId = null,
     limit, maxTokens = 400, marginPts = 5, minSamples = 20, minSavings = 0.1, concurrency = 4, rpm = 90,
-    samples = true, dryRun = false, auditSummary = null, onProgress = () => {},
+    samples = true, dryRun = false, auditSummary = null, onProgress = () => {}, onCall, onAnswer,
   } = opts;
   const started = new Date();
   const secrets = [config.apiKey];
@@ -131,7 +133,7 @@ export async function runBench(opts) {
     if (!candidateModels.length) throw new BenchError('None of the candidate models could be used.');
   }
 
-  const ctx = { client, budget: new Budget(config.maxSpend), records: /** @type {import('../probe.js').CallRecord[]} */ ([]), config, log: () => {} };
+  const ctx = { client, budget: new Budget(config.maxSpend), records: /** @type {import('../probe.js').CallRecord[]} */ ([]), config, log: () => {}, onCall };
   const balanceAtStart = (await readBalance(client)).available;
 
   // Prove every model can answer before spending on the real run.
@@ -220,6 +222,11 @@ export async function runBench(opts) {
     try {
       const rec = await call(model, item.messages, 'shadow', item.maxTokens ?? maxTokens);
       answers.set(`${model.id}|${item.id}`, rec);
+      if (onAnswer) {
+        // Hard checks are instant, so show them live. A judged prompt is only "known wrong" if it already failed a hard check.
+        const det = runChecks(item.expect, rec.ok ? rec.content ?? '' : null);
+        try { onAnswer({ model: model.id, correct: item.judge ? (det.pass ? null : false) : det.pass }); } catch { /* a listener must not break the run */ }
+      }
     } catch (err) {
       if (!(err instanceof BudgetExceededError)) throw err;
       budgetStopped = true;
@@ -314,6 +321,12 @@ export async function runBench(opts) {
       diff: paired && Number.isFinite(paired.diff.est) ? paired.diff : null, diffSd: paired?.diffSd ?? null,
       costPerCorrect: k > 0 ? costPer1k / (k / n) : null, errorRate: (n - okRecs.length) / n,
     });
+    // An empty or cut-off answer scores as wrong. Reasoning models can spend the whole token limit on
+    // hidden thinking, which would make a good cheap model look bad, so count and say so.
+    const cutOff = okRecs.filter((r) => r.finishReason === 'length' || !(r.content ?? '').trim()).length;
+    if (cutOff / n >= 0.1) {
+      notes.push(`${m.id}: ${cutOff} of ${n} answers were empty or cut off at the ${maxTokens}-token limit, and were scored as wrong. Reasoning models can spend the limit on hidden thinking; raise --max-tokens before trusting this result.`);
+    }
     const latencies = okRecs.map((r) => r.latencyMs);
     const failures = complete
       .filter((it) => scored.get(`${m.id}|${it.id}`).correct === 0)
@@ -321,7 +334,7 @@ export async function runBench(opts) {
       .map((it) => ({ id: it.id, prompt: clip(lastUser(it), 140), answer: clip(answers.get(`${m.id}|${it.id}`).content ?? '', 160), reason: scored.get(`${m.id}|${it.id}`).reason }));
     detail.push({
       id: m.id, role: isCurrent ? 'current' : 'candidate',
-      totalCostUsd: formatDecimal(totalCost, 9), correct: k, n,
+      totalCostUsd: formatDecimal(totalCost, 9), correct: k, n, cutOff,
       accuracyCi: [acc.lo, acc.hi],
       qualityVsCurrent: paired && Number.isFinite(paired.ratio.est) ? paired.ratio : isCurrent ? { est: 1, lo: 1, hi: 1 } : null,
       latencyP50Ms: Math.round(percentile(latencies, 50)) || null, latencyP95Ms: Math.round(percentile(latencies, 95)) || null,

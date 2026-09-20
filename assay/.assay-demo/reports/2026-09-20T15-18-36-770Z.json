@@ -1,9 +1,9 @@
 {
   "schema": "assay.report/1",
-  "id": "2026-09-20T15-18-45-536Z",
-  "startedAt": "2026-09-20T15:18:45.536Z",
-  "finishedAt": "2026-09-20T15:18:47.349Z",
-  "durationMs": 1813,
+  "id": "2026-09-20T15-18-36-770Z",
+  "startedAt": "2026-09-20T15:18:36.770Z",
+  "finishedAt": "2026-09-20T15:18:38.517Z",
+  "durationMs": 1747,
   "tool": {
     "name": "assay",
     "version": "0.1.0"
@@ -31,7 +31,7 @@
   "spend": {
     "calls": 33,
     "expectedUsd": "0.005460300",
-    "actualUsd": "0.008421000",
+    "actualUsd": "0.008420000",
     "capUsd": "5.000000"
   },
   "score": {
@@ -50,10 +50,10 @@
       "method": "Reads GET /key and GET /auth/key, checks the two agree, then sends a deliberately invalid key and expects 401 or 403.",
       "limits": "Does not test key rotation, per-key limits enforcement or wallet-signed keys.",
       "status": "pass",
-      "summary": "Balance $4.754996 readable; invalid key rejected (401).",
+      "summary": "Balance $4.763416 readable; invalid key rejected (401).",
       "measured": {
-        "available": "4.754996000",
-        "used": "0.245004000",
+        "available": "4.763416000",
+        "used": "0.236583000",
         "balanceDecimals": 6,
         "rateLimit": {
           "requestsPerMinute": 120,
@@ -61,7 +61,7 @@
         },
         "badKeyStatus": 401
       },
-      "durationMs": 11
+      "durationMs": 12
     },
     {
       "id": "catalog",
@@ -87,7 +87,7 @@
         "issueCount": 0,
         "skipped": []
       },
-      "durationMs": 49
+      "durationMs": 46
     },
     {
       "id": "billing",
@@ -96,30 +96,30 @@
       "method": "Reads the balance, sends fixed ~450-token canary calls, waits for the charge to land, then compares the balance drop with Σ(tokens × catalog price) in exact decimals. Tolerance is 2% plus one unit of balance precision per call. A failure needs two independent batches to agree.",
       "limits": "Only sees charges on this key: other clients using it during the audit look like overcharging (use a dedicated key). Assumes metered usage is billed at catalog rate; the discount is applied when credit is purchased.",
       "status": "fail",
-      "summary": "Billed above catalog price in 2 independent batches (1.499× catalog, 1.500× catalog).",
+      "summary": "Billed above catalog price in 2 independent batches (1.512× catalog, 1.500× catalog).",
       "measured": {
         "ratio": 1.5000128491763678,
         "billed": "0.005837000",
         "expected": "0.003891300",
         "calls": 18,
         "balanceResolution": "0.000001000",
-        "settleWaitMs": 420,
+        "settleWaitMs": 429,
         "batches": 2
       },
       "details": {
         "batches": [
           {
             "verdict": "over",
-            "ratio": 1.499498882121656,
-            "billed": "0.001945000",
+            "ratio": 1.511834091434739,
+            "billed": "0.001961000",
             "expected": "0.001297100",
             "calls": 6,
             "settled": true,
             "budgetStopped": false,
             "conservation": {
               "ok": true,
-              "deltaAvailable": "0.001945000",
-              "deltaUsed": "0.001945000"
+              "deltaAvailable": "0.001961000",
+              "deltaUsed": "0.001961000"
             },
             "reportedCost": null
           },
@@ -140,7 +140,7 @@
           }
         ]
       },
-      "durationMs": 1406
+      "durationMs": 1330
     },
     {
       "id": "identity",
@@ -201,7 +201,7 @@
         "duplicateIds": 0,
         "baselineMismatch": []
       },
-      "durationMs": 86
+      "durationMs": 91
     },
     {
       "id": "tokens",
@@ -284,7 +284,7 @@
           }
         ]
       },
-      "durationMs": 35
+      "durationMs": 38
     },
     {
       "id": "latency",
@@ -293,51 +293,51 @@
       "method": "With a baseline key (ASSAY_BASELINE_KEY, a direct OpenRouter key): alternates identical tiny requests through Orbio and directly, and bootstraps a 95% interval for the difference of medians. Without one: reports the gateway's own round-trip on /key (no model involved) and per-model latency, which bound but do not isolate the overhead.",
       "limits": "Overhead cannot be isolated without a baseline. Results include your own network distance to each endpoint and vary by region and time of day.",
       "status": "info",
-      "summary": "Gateway round-trip p50 2 ms (p95 2 ms) on /key with no model involved. Set ASSAY_BASELINE_KEY to measure the added latency against the provider directly.",
+      "summary": "Gateway round-trip p50 2 ms (p95 3 ms) on /key with no model involved. Set ASSAY_BASELINE_KEY to measure the added latency against the provider directly.",
       "measured": {
         "floorP50": 2,
-        "floorP95": 2,
+        "floorP95": 3,
         "claimMs": 50,
         "selfReportedMs": null
       },
       "details": {
         "floor": {
           "n": 10,
-          "min": 0.8794159999815747,
-          "p50": 2.0178334999945946,
-          "p95": 2.3126623500022103,
-          "max": 2.4476250000006985,
-          "mean": 1.928787500000908
+          "min": 1.8512080000073183,
+          "p50": 2.250104499995359,
+          "p95": 3.12066685000318,
+          "max": 3.5950420000008307,
+          "mean": 2.3380374999978812
         },
         "perModel": {
           "anthropic/claude-haiku-4.5": {
             "n": 8,
-            "min": 10.592708000011044,
-            "p50": 14.384249499998987,
-            "p95": 16.28154374998703,
-            "max": 16.391749999980675,
-            "mean": 14.004963374994986
+            "min": 13.104584000015166,
+            "p50": 14.03847900000983,
+            "p95": 16.37526480000961,
+            "max": 16.565417000005255,
+            "mean": 14.5095468750078
           },
           "openai/gpt-6-mini": {
             "n": 8,
-            "min": 12.22358400002122,
-            "p50": 14.54481299998588,
-            "p95": 15.950547799986088,
-            "max": 16.064749999990454,
-            "mean": 14.356041874998482
+            "min": 13.027416999975685,
+            "p50": 14.707541499999934,
+            "p95": 16.711516999985907,
+            "max": 16.862541999988025,
+            "mean": 14.939640499989764
           },
           "google/gemini-3.8-flash": {
             "n": 8,
-            "min": 13.365583000006154,
-            "p50": 14.503478999991785,
-            "p95": 16.85292894999875,
-            "max": 17.452332999993814,
-            "mean": 14.808827999997447
+            "min": 14.238958999980241,
+            "p50": 15.660562499979278,
+            "p95": 16.387144199998875,
+            "max": 16.467541999998502,
+            "mean": 15.495125249988632
           }
         },
         "selfReported": []
       },
-      "durationMs": 22
+      "durationMs": 27
     }
   ],
   "records": [
@@ -349,7 +349,7 @@
       "ok": true,
       "promptTokens": 12,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 14,
       "expectedUsd": "0.000017600",
       "billedUsd": null
     },
@@ -361,7 +361,7 @@
       "ok": true,
       "promptTokens": 12,
       "completionTokens": 2,
-      "latencyMs": 14,
+      "latencyMs": 16,
       "expectedUsd": "0.000003000",
       "billedUsd": null
     },
@@ -373,7 +373,7 @@
       "ok": true,
       "promptTokens": 11,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 13,
       "expectedUsd": "0.000010800",
       "billedUsd": null
     },
@@ -385,9 +385,9 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 15,
+      "latencyMs": 13,
       "expectedUsd": "0.000424000",
-      "billedUsd": "0.000000000"
+      "billedUsd": "0.000016000"
     },
     {
       "tag": "billing",
@@ -397,7 +397,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 16,
+      "latencyMs": 13,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -421,7 +421,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 16,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000000000"
     },
@@ -433,7 +433,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 16,
+      "latencyMs": 14,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -457,7 +457,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 14,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000000000"
     },
@@ -469,7 +469,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 17,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -481,7 +481,7 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 15,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.000000000"
     },
@@ -492,32 +492,32 @@
       "respModel": "claude-haiku-4-5-20251001",
       "ok": true,
       "promptTokens": 520,
+      "completionTokens": 2,
+      "latencyMs": 14,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 15,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
       "completionTokens": 2,
       "latencyMs": 16,
-      "expectedUsd": "0.000424000",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "openai/gpt-6-mini",
-      "respModel": "gpt-6-mini-2026-08-01",
-      "ok": true,
-      "promptTokens": 495,
-      "completionTokens": 2,
-      "latencyMs": 14,
-      "expectedUsd": "0.000075450",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "google/gemini-3.8-flash",
-      "respModel": "gemini-3.8-flash-001",
-      "ok": true,
-      "promptTokens": 472,
-      "completionTokens": 2,
-      "latencyMs": 14,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.000000000"
     },
@@ -541,7 +541,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 15,
+      "latencyMs": 16,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -553,9 +553,9 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 14,
+      "latencyMs": 15,
       "expectedUsd": "0.000149100",
-      "billedUsd": "0.000000000"
+      "billedUsd": "0.000636000"
     },
     {
       "tag": "billing",
@@ -565,9 +565,9 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 14,
+      "latencyMs": 17,
       "expectedUsd": "0.000424000",
-      "billedUsd": "0.000749000"
+      "billedUsd": "0.000113000"
     },
     {
       "tag": "billing",
@@ -577,7 +577,43 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 15,
+      "latencyMs": 14,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000224000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
+      "completionTokens": 2,
+      "latencyMs": 14,
+      "expectedUsd": "0.000149100",
+      "billedUsd": "0.000636000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 520,
+      "completionTokens": 2,
+      "latencyMs": 13,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000113000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 16,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000224000"
     },
@@ -601,7 +637,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 16,
+      "latencyMs": 15,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000113000"
     },
@@ -613,7 +649,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 14,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000223000"
     },
@@ -625,45 +661,9 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 17,
+      "latencyMs": 16,
       "expectedUsd": "0.000149100",
-      "billedUsd": "0.000636000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "anthropic/claude-haiku-4.5",
-      "respModel": "claude-haiku-4-5-20251001",
-      "ok": true,
-      "promptTokens": 520,
-      "completionTokens": 2,
-      "latencyMs": 11,
-      "expectedUsd": "0.000424000",
-      "billedUsd": "0.000114000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "openai/gpt-6-mini",
-      "respModel": "gpt-6-mini-2026-08-01",
-      "ok": true,
-      "promptTokens": 495,
-      "completionTokens": 2,
-      "latencyMs": 12,
-      "expectedUsd": "0.000075450",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "google/gemini-3.8-flash",
-      "respModel": "gemini-3.8-flash-001",
-      "ok": true,
-      "promptTokens": 472,
-      "completionTokens": 2,
-      "latencyMs": 13,
-      "expectedUsd": "0.000149100",
-      "billedUsd": "0.003142000"
+      "billedUsd": "0.002919000"
     },
     {
       "tag": "fingerprint",
@@ -673,7 +673,7 @@
       "ok": true,
       "promptTokens": 99,
       "completionTokens": 1,
-      "latencyMs": 16,
+      "latencyMs": 15,
       "expectedUsd": "0.000083200",
       "billedUsd": null
     },
@@ -685,7 +685,7 @@
       "ok": true,
       "promptTokens": 99,
       "completionTokens": 1,
-      "latencyMs": 12,
+      "latencyMs": 14,
       "expectedUsd": "0.000083200",
       "billedUsd": null
     },
@@ -697,7 +697,7 @@
       "ok": true,
       "promptTokens": 84,
       "completionTokens": 1,
-      "latencyMs": 11,
+      "latencyMs": 14,
       "expectedUsd": "0.000013200",
       "billedUsd": null
     },

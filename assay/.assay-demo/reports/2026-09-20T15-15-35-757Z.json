@@ -1,9 +1,9 @@
 {
   "schema": "assay.report/1",
-  "id": "2026-09-20T15-18-45-536Z",
-  "startedAt": "2026-09-20T15:18:45.536Z",
-  "finishedAt": "2026-09-20T15:18:47.349Z",
-  "durationMs": 1813,
+  "id": "2026-09-20T15-15-35-757Z",
+  "startedAt": "2026-09-20T15:15:35.757Z",
+  "finishedAt": "2026-09-20T15:15:37.557Z",
+  "durationMs": 1800,
   "tool": {
     "name": "assay",
     "version": "0.1.0"
@@ -50,10 +50,10 @@
       "method": "Reads GET /key and GET /auth/key, checks the two agree, then sends a deliberately invalid key and expects 401 or 403.",
       "limits": "Does not test key rotation, per-key limits enforcement or wallet-signed keys.",
       "status": "pass",
-      "summary": "Balance $4.754996 readable; invalid key rejected (401).",
+      "summary": "Balance $5.000000 readable; invalid key rejected (401).",
       "measured": {
-        "available": "4.754996000",
-        "used": "0.245004000",
+        "available": "5.000000000",
+        "used": "0.000000000",
         "balanceDecimals": 6,
         "rateLimit": {
           "requestsPerMinute": 120,
@@ -61,7 +61,7 @@
         },
         "badKeyStatus": 401
       },
-      "durationMs": 11
+      "durationMs": 38
     },
     {
       "id": "catalog",
@@ -87,7 +87,7 @@
         "issueCount": 0,
         "skipped": []
       },
-      "durationMs": 49
+      "durationMs": 46
     },
     {
       "id": "billing",
@@ -103,7 +103,7 @@
         "expected": "0.003891300",
         "calls": 18,
         "balanceResolution": "0.000001000",
-        "settleWaitMs": 420,
+        "settleWaitMs": 425,
         "batches": 2
       },
       "details": {
@@ -140,7 +140,7 @@
           }
         ]
       },
-      "durationMs": 1406
+      "durationMs": 1383
     },
     {
       "id": "identity",
@@ -201,7 +201,7 @@
         "duplicateIds": 0,
         "baselineMismatch": []
       },
-      "durationMs": 86
+      "durationMs": 82
     },
     {
       "id": "tokens",
@@ -284,7 +284,7 @@
           }
         ]
       },
-      "durationMs": 35
+      "durationMs": 30
     },
     {
       "id": "latency",
@@ -303,41 +303,41 @@
       "details": {
         "floor": {
           "n": 10,
-          "min": 0.8794159999815747,
-          "p50": 2.0178334999945946,
-          "p95": 2.3126623500022103,
-          "max": 2.4476250000006985,
-          "mean": 1.928787500000908
+          "min": 1.5280830000001515,
+          "p50": 1.594041500000003,
+          "p95": 1.7409043500000052,
+          "max": 1.761792000000014,
+          "mean": 1.6151916000000255
         },
         "perModel": {
           "anthropic/claude-haiku-4.5": {
             "n": 8,
-            "min": 10.592708000011044,
-            "p50": 14.384249499998987,
-            "p95": 16.28154374998703,
-            "max": 16.391749999980675,
-            "mean": 14.004963374994986
+            "min": 12.079750000000104,
+            "p50": 13.678707999999972,
+            "p95": 14.671033449999925,
+            "max": 14.809749999999894,
+            "mean": 13.659166750000011
           },
           "openai/gpt-6-mini": {
             "n": 8,
-            "min": 12.22358400002122,
-            "p50": 14.54481299998588,
-            "p95": 15.950547799986088,
-            "max": 16.064749999990454,
-            "mean": 14.356041874998482
+            "min": 11.407542000000035,
+            "p50": 13.981854500000054,
+            "p95": 15.463279049999993,
+            "max": 15.714375000000018,
+            "mean": 13.783239750000021
           },
           "google/gemini-3.8-flash": {
             "n": 8,
-            "min": 13.365583000006154,
-            "p50": 14.503478999991785,
-            "p95": 16.85292894999875,
-            "max": 17.452332999993814,
-            "mean": 14.808827999997447
+            "min": 11.48979200000008,
+            "p50": 12.264416999999924,
+            "p95": 13.916320949999886,
+            "max": 14.51712499999985,
+            "mean": 12.462229374999978
           }
         },
         "selfReported": []
       },
-      "durationMs": 22
+      "durationMs": 19
     }
   ],
   "records": [
@@ -349,7 +349,7 @@
       "ok": true,
       "promptTokens": 12,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 16,
       "expectedUsd": "0.000017600",
       "billedUsd": null
     },
@@ -361,7 +361,7 @@
       "ok": true,
       "promptTokens": 12,
       "completionTokens": 2,
-      "latencyMs": 14,
+      "latencyMs": 12,
       "expectedUsd": "0.000003000",
       "billedUsd": null
     },
@@ -373,7 +373,7 @@
       "ok": true,
       "promptTokens": 11,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 14,
       "expectedUsd": "0.000010800",
       "billedUsd": null
     },
@@ -385,7 +385,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 15,
+      "latencyMs": 14,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000000000"
     },
@@ -397,7 +397,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 16,
+      "latencyMs": 11,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -409,7 +409,7 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 16,
+      "latencyMs": 12,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.000000000"
     },
@@ -421,7 +421,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 14,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000000000"
     },
@@ -433,7 +433,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 16,
+      "latencyMs": 14,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -445,7 +445,7 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 15,
+      "latencyMs": 12,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.001946000"
     },
@@ -457,31 +457,67 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
+      "latencyMs": 14,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 13,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
+      "completionTokens": 2,
+      "latencyMs": 13,
+      "expectedUsd": "0.000149100",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 520,
+      "completionTokens": 2,
+      "latencyMs": 13,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 16,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
+      "completionTokens": 2,
       "latencyMs": 12,
-      "expectedUsd": "0.000424000",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "openai/gpt-6-mini",
-      "respModel": "gpt-6-mini-2026-08-01",
-      "ok": true,
-      "promptTokens": 495,
-      "completionTokens": 2,
-      "latencyMs": 13,
-      "expectedUsd": "0.000075450",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "google/gemini-3.8-flash",
-      "respModel": "gemini-3.8-flash-001",
-      "ok": true,
-      "promptTokens": 472,
-      "completionTokens": 2,
-      "latencyMs": 13,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.000000000"
     },
@@ -493,43 +529,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 16,
-      "expectedUsd": "0.000424000",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "openai/gpt-6-mini",
-      "respModel": "gpt-6-mini-2026-08-01",
-      "ok": true,
-      "promptTokens": 495,
-      "completionTokens": 2,
-      "latencyMs": 14,
-      "expectedUsd": "0.000075450",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "google/gemini-3.8-flash",
-      "respModel": "gemini-3.8-flash-001",
-      "ok": true,
-      "promptTokens": 472,
-      "completionTokens": 2,
-      "latencyMs": 14,
-      "expectedUsd": "0.000149100",
-      "billedUsd": "0.000000000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "anthropic/claude-haiku-4.5",
-      "respModel": "claude-haiku-4-5-20251001",
-      "ok": true,
-      "promptTokens": 520,
-      "completionTokens": 2,
-      "latencyMs": 14,
+      "latencyMs": 15,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000000000"
     },
@@ -553,7 +553,7 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 14,
+      "latencyMs": 11,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.000000000"
     },
@@ -567,67 +567,31 @@
       "completionTokens": 2,
       "latencyMs": 14,
       "expectedUsd": "0.000424000",
-      "billedUsd": "0.000749000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "openai/gpt-6-mini",
-      "respModel": "gpt-6-mini-2026-08-01",
-      "ok": true,
-      "promptTokens": 495,
-      "completionTokens": 2,
-      "latencyMs": 15,
-      "expectedUsd": "0.000075450",
-      "billedUsd": "0.000224000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
-      "model": "google/gemini-3.8-flash",
-      "respModel": "gemini-3.8-flash-001",
-      "ok": true,
-      "promptTokens": 472,
-      "completionTokens": 2,
-      "latencyMs": 16,
-      "expectedUsd": "0.000149100",
       "billedUsd": "0.000636000"
     },
     {
       "tag": "billing",
       "source": "gateway",
-      "model": "anthropic/claude-haiku-4.5",
-      "respModel": "claude-haiku-4-5-20251001",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
       "ok": true,
-      "promptTokens": 520,
+      "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 16,
-      "expectedUsd": "0.000424000",
+      "latencyMs": 14,
+      "expectedUsd": "0.000075450",
       "billedUsd": "0.000113000"
     },
     {
       "tag": "billing",
       "source": "gateway",
-      "model": "openai/gpt-6-mini",
-      "respModel": "gpt-6-mini-2026-08-01",
-      "ok": true,
-      "promptTokens": 495,
-      "completionTokens": 2,
-      "latencyMs": 13,
-      "expectedUsd": "0.000075450",
-      "billedUsd": "0.000223000"
-    },
-    {
-      "tag": "billing",
-      "source": "gateway",
       "model": "google/gemini-3.8-flash",
       "respModel": "gemini-3.8-flash-001",
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 17,
+      "latencyMs": 12,
       "expectedUsd": "0.000149100",
-      "billedUsd": "0.000636000"
+      "billedUsd": "0.000224000"
     },
     {
       "tag": "billing",
@@ -637,9 +601,9 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 11,
+      "latencyMs": 12,
       "expectedUsd": "0.000424000",
-      "billedUsd": "0.000114000"
+      "billedUsd": "0.000636000"
     },
     {
       "tag": "billing",
@@ -649,9 +613,9 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 13,
       "expectedUsd": "0.000075450",
-      "billedUsd": "0.000000000"
+      "billedUsd": "0.000113000"
     },
     {
       "tag": "billing",
@@ -662,6 +626,42 @@
       "promptTokens": 472,
       "completionTokens": 2,
       "latencyMs": 13,
+      "expectedUsd": "0.000149100",
+      "billedUsd": "0.000223000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 520,
+      "completionTokens": 2,
+      "latencyMs": 13,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000636000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 15,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000114000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
+      "completionTokens": 2,
+      "latencyMs": 15,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.003142000"
     },
@@ -673,7 +673,7 @@
       "ok": true,
       "promptTokens": 99,
       "completionTokens": 1,
-      "latencyMs": 16,
+      "latencyMs": 15,
       "expectedUsd": "0.000083200",
       "billedUsd": null
     },
@@ -685,7 +685,7 @@
       "ok": true,
       "promptTokens": 99,
       "completionTokens": 1,
-      "latencyMs": 12,
+      "latencyMs": 13,
       "expectedUsd": "0.000083200",
       "billedUsd": null
     },
@@ -697,7 +697,7 @@
       "ok": true,
       "promptTokens": 84,
       "completionTokens": 1,
-      "latencyMs": 11,
+      "latencyMs": 14,
       "expectedUsd": "0.000013200",
       "billedUsd": null
     },
@@ -709,7 +709,7 @@
       "ok": true,
       "promptTokens": 84,
       "completionTokens": 1,
-      "latencyMs": 15,
+      "latencyMs": 14,
       "expectedUsd": "0.000013200",
       "billedUsd": null
     },
@@ -721,7 +721,7 @@
       "ok": true,
       "promptTokens": 67,
       "completionTokens": 1,
-      "latencyMs": 16,
+      "latencyMs": 11,
       "expectedUsd": "0.000023850",
       "billedUsd": null
     },
@@ -733,7 +733,7 @@
       "ok": true,
       "promptTokens": 67,
       "completionTokens": 1,
-      "latencyMs": 15,
+      "latencyMs": 12,
       "expectedUsd": "0.000023850",
       "billedUsd": null
     }

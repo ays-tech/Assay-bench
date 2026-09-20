@@ -81,8 +81,9 @@ export function validateBenchParams(body) {
  * @param {import('./dataset.js').BenchItem[]} [opts.dataset] supply items directly (CLI --data)
  * @param {string} [opts.datasetName]
  * @param {(e: any) => void} [opts.onProgress]
+ * @param {Function} [opts.onCall] @param {Function} [opts.onAnswer] live-activity hooks
  */
-export async function runBenchJob({ config, client, store, params, dataset, datasetName, onProgress }) {
+export async function runBenchJob({ config, client, store, params, dataset, datasetName, onProgress, onCall, onAnswer }) {
   let items = dataset;
   let name = datasetName;
   if (!items) {
@@ -98,7 +99,7 @@ export async function runBenchJob({ config, client, store, params, dataset, data
     current: params.current, candidates: params.candidates ?? 'auto', judge: params.judge ?? null,
     limit: params.limit, maxTokens: params.maxTokens, marginPts: params.marginPts ?? 5,
     concurrency: params.concurrency, rpm: params.rpm, samples: params.samples !== false, dryRun: Boolean(params.dryRun),
-    auditSummary: auditSummaryFor(store, host), onProgress,
+    auditSummary: auditSummaryFor(store, host), onProgress, onCall, onAnswer,
   });
   if (result.report) result.savedPath = store.saveBench(result.report);
   return result;

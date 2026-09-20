@@ -1,3 +1,4 @@
+import { announceCall } from './probe.js';
 import { estimateCallCost } from './catalog.js';
 import { redact } from './redact.js';
 
@@ -77,6 +78,7 @@ export async function narrate(ctx, report, choice) {
       temperature: 0.2,
     });
     settle(null);
+    announceCall(ctx, model, { tag: 'narrate', ok: res.ok, status: res.status, usage: res.json?.usage, latencyMs: Math.round(res.elapsedMs ?? 0), error: res.ok ? null : `HTTP ${res.status}` });
     const text = res.json?.choices?.[0]?.message?.content;
     if (!res.ok || typeof text !== 'string') return null;
     const verdict = validateNarrative(text, facts);

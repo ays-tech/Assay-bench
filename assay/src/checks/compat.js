@@ -1,6 +1,6 @@
 import { BudgetExceededError } from '../budget.js';
 import { estimateCallCost } from '../catalog.js';
-import { WEATHER_TOOL } from '../probe.js';
+import { announceCall, WEATHER_TOOL } from '../probe.js';
 
 /**
  * Pure: judge a streamed chat completion summary.
@@ -84,9 +84,11 @@ export const compatCheck = {
           message: verdict.problems.length ? verdict.problems.join('; ') : `${stream.chunks.length} chunks, first event in ${Math.round(stream.firstEventMs ?? stream.ttfbMs)} ms, [DONE] and usage present`,
         });
         settleStream(streamUsageCost(streamModel, stream.usage));
+        announceCall(ctx, streamModel, { tag: 'compat', ok: true, usage: stream.usage, latencyMs: Math.round(stream.elapsedMs ?? stream.ttfbMs ?? 0) });
       } catch (err) {
         items.push({ name: 'streaming', severity: 'fail', message: err.message });
         settleStream(null);
+        announceCall(ctx, streamModel, { tag: 'compat', ok: false, error: err.message });
       }
 
       // 2. Forced tool call (try up to two models; some cheap models don't support tools at all)
@@ -104,6 +106,7 @@ export const compatCheck = {
           });
           const verdict = evaluateToolCall(res);
           settle(res.ok ? streamUsageCost(model, res.json?.usage) : null);
+          announceCall(ctx, model, { tag: 'compat', ok: res.ok, status: res.status, usage: res.json?.usage, latencyMs: Math.round(res.elapsedMs ?? 0), error: res.ok ? null : `HTTP ${res.status}` });
           const item = {
             name: 'tool-calls',
             severity: /** @type {'pass'|'warn'|'fail'} */ (verdict.outcome === 'ok' ? 'pass' : verdict.outcome === 'malformed' ? 'fail' : 'warn'),

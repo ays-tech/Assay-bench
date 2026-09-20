@@ -43,10 +43,11 @@ import { buildHeadline } from './summary.js';
  * @param {OrbioClient} [opts.client]
  * @param {OrbioClient|null} [opts.baselineClient]
  * @param {(e: ProgressEvent) => void} [opts.onProgress]
+ * @param {(record: import('./probe.js').CallRecord) => void} [opts.onCall]  told about every gateway call as it finishes
  * @param {typeof CHECKS} [opts.checks]
  * @returns {Promise<{report: any, catalog: import('./catalog.js').NormalizedCatalog|null}>}
  */
-export async function runAudit({ config, client, baselineClient, onProgress = () => {}, checks = CHECKS }) {
+export async function runAudit({ config, client, baselineClient, onProgress = () => {}, onCall, checks = CHECKS }) {
   const started = new Date();
   const secrets = [config.apiKey, config.baselineKey ?? ''];
   const gateway = client ?? new OrbioClient({ baseUrl: config.baseUrl, apiKey: config.apiKey, timeoutMs: config.timeoutMs, label: 'Orbio' });
@@ -60,7 +61,7 @@ export async function runAudit({ config, client, baselineClient, onProgress = ()
   /** @type {AuditContext} */
   const ctx = {
     config, client: gateway, baselineClient: baseline, catalog: null, models: [], skippedModels: [], records: [],
-    budget: new Budget(config.maxSpend), fatal: null, state: { billing: [], startBalance: null },
+    budget: new Budget(config.maxSpend), fatal: null, state: { billing: [], startBalance: null }, onCall,
     log: (m) => config.verbose && process.stderr.write(`[assay] ${redact(m, secrets)}\n`),
   };
 
