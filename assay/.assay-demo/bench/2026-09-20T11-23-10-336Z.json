@@ -1,9 +1,9 @@
 {
   "schema": "assay.bench/1",
-  "id": "2026-09-20T11-47-57-525Z",
-  "startedAt": "2026-09-20T11:47:57.525Z",
-  "finishedAt": "2026-09-20T11:47:58.301Z",
-  "durationMs": 776,
+  "id": "2026-09-20T11-23-10-336Z",
+  "startedAt": "2026-09-20T11:23:10.336Z",
+  "finishedAt": "2026-09-20T11:23:11.105Z",
+  "durationMs": 769,
   "tool": {
     "name": "assay",
     "version": "0.1.0"
@@ -13,8 +13,8 @@
   },
   "dataset": {
     "name": "Support tickets (sample)",
-    "prompts": 9,
-    "requested": 9,
+    "prompts": 6,
+    "requested": 6,
     "judged": 0
   },
   "settings": {
@@ -25,42 +25,35 @@
     "maxTokens": 400
   },
   "trust": {
-    "audit": {
-      "id": "2026-09-20T11-35-25-941Z",
-      "fineness": 1000,
-      "grade": "Verified",
-      "coverage": 0.9,
-      "at": "2026-09-20T11:35:27.052Z",
-      "headline": "Authentication, billing, model identity, token counts and API behaviour held up."
-    },
+    "audit": null,
     "billing": {
       "verdict": "ok",
-      "ratio": 1.0000514298252208,
-      "calls": 45,
-      "billedUsd": "0.032862000",
-      "expectedUsd": "0.032860310"
+      "ratio": 1.0000907219012558,
+      "calls": 30,
+      "billedUsd": "0.023260000",
+      "expectedUsd": "0.023257890"
     }
   },
   "models": [
     {
       "id": "openai/gpt-6-astra",
       "role": "current",
-      "totalCostUsd": "0.020670000",
-      "correct": 8,
-      "n": 9,
+      "totalCostUsd": "0.014610000",
+      "correct": 5,
+      "n": 6,
       "accuracyCi": [
-        0.5649937852319399,
-        0.9801096286728695
+        0.43649056343635395,
+        0.9699474141282697
       ],
       "qualityVsCurrent": {
         "est": 1,
         "lo": 1,
         "hi": 1
       },
-      "latencyP50Ms": 14,
-      "latencyP95Ms": 19,
-      "avgPromptTokens": 152,
-      "avgCompletionTokens": 16,
+      "latencyP50Ms": 12,
+      "latencyP95Ms": 20,
+      "avgPromptTokens": 154,
+      "avgCompletionTokens": 18,
       "judge": null,
       "failures": [
         {
@@ -70,11 +63,11 @@
           "reason": "json: no valid JSON found in the response"
         }
       ],
-      "costPer1kUsd": 2.296666666666667,
-      "accuracy": 0.8888888888888888,
+      "costPer1kUsd": 2.435,
+      "accuracy": 0.8333333333333334,
       "diff": null,
       "diffSd": null,
-      "costPerCorrect1kUsd": 2.58375,
+      "costPerCorrect1kUsd": 2.922,
       "savings": 0,
       "errorRate": 0,
       "verdict": "current",
@@ -83,22 +76,22 @@
     {
       "id": "anthropic/claude-opus-5",
       "role": "candidate",
-      "totalCostUsd": "0.010800000",
-      "correct": 8,
-      "n": 9,
+      "totalCostUsd": "0.007660000",
+      "correct": 5,
+      "n": 6,
       "accuracyCi": [
-        0.5649937852319399,
-        0.9801096286728695
+        0.43649056343635395,
+        0.9699474141282697
       ],
       "qualityVsCurrent": {
         "est": 1,
         "lo": 1,
         "hi": 1
       },
-      "latencyP50Ms": 14,
+      "latencyP50Ms": 12,
       "latencyP95Ms": 16,
-      "avgPromptTokens": 159,
-      "avgCompletionTokens": 16,
+      "avgPromptTokens": 161,
+      "avgCompletionTokens": 19,
       "judge": null,
       "failures": [
         {
@@ -108,16 +101,16 @@
           "reason": "json: no valid JSON found in the response"
         }
       ],
-      "costPer1kUsd": 1.2000000000000002,
-      "accuracy": 0.8888888888888888,
+      "costPer1kUsd": 1.2766666666666666,
+      "accuracy": 0.8333333333333334,
       "diff": {
         "est": 0,
         "lo": 0,
         "hi": 0
       },
       "diffSd": 0,
-      "costPerCorrect1kUsd": 1.3500000000000003,
-      "savings": 0.47750362844702465,
+      "costPerCorrect1kUsd": 1.5319999999999998,
+      "savings": 0.4757015742642027,
       "errorRate": 0,
       "verdict": "insufficient",
       "neededSamples": null
@@ -125,22 +118,22 @@
     {
       "id": "openai/gpt-6-mini",
       "role": "candidate",
-      "totalCostUsd": "0.000278850",
-      "correct": 3,
-      "n": 9,
+      "totalCostUsd": "0.000192750",
+      "correct": 2,
+      "n": 6,
       "accuracyCi": [
-        0.12058159868274293,
-        0.6458026525009102
+        0.09676933255921683,
+        0.7000116786584712
       ],
       "qualityVsCurrent": {
-        "est": 0.375,
+        "est": 0.4,
         "lo": 0,
-        "hi": 0.75
+        "hi": 0.8
       },
       "latencyP50Ms": 14,
       "latencyP95Ms": 18,
-      "avgPromptTokens": 152,
-      "avgCompletionTokens": 14,
+      "avgPromptTokens": 154,
+      "avgCompletionTokens": 15,
       "judge": null,
       "failures": [
         {
@@ -162,16 +155,16 @@
           "reason": "fields: expected {\"category\":\"bug\",\"priority\":\"medium\"}, got {\"category\":\"bug\",\"priority\":\"high\"}"
         }
       ],
-      "costPer1kUsd": 0.03098333333333333,
+      "costPer1kUsd": 0.032125,
       "accuracy": 0.3333333333333333,
       "diff": {
-        "est": -0.5555555555555556,
-        "lo": -0.8888888888888888,
-        "hi": -0.2222222222222222
+        "est": -0.5,
+        "lo": -0.8333333333333334,
+        "hi": -0.16666666666666666
       },
-      "diffSd": 0.5270462766947299,
-      "costPerCorrect1kUsd": 0.09295,
-      "savings": 0.9865094339622642,
+      "diffSd": 0.5477225575051661,
+      "costPerCorrect1kUsd": 0.096375,
+      "savings": 0.9868069815195072,
       "errorRate": 0,
       "verdict": "insufficient",
       "neededSamples": null
@@ -179,30 +172,24 @@
     {
       "id": "google/gemini-3.8-flash",
       "role": "candidate",
-      "totalCostUsd": "0.000886200",
-      "correct": 7,
-      "n": 9,
+      "totalCostUsd": "0.000645900",
+      "correct": 5,
+      "n": 6,
       "accuracyCi": [
-        0.4525833436728054,
-        0.9367762376877727
+        0.43649056343635395,
+        0.9699474141282697
       ],
       "qualityVsCurrent": {
-        "est": 0.875,
-        "lo": 0.625,
+        "est": 1,
+        "lo": 1,
         "hi": 1
       },
-      "latencyP50Ms": 14,
-      "latencyP95Ms": 17,
-      "avgPromptTokens": 145,
-      "avgCompletionTokens": 15,
+      "latencyP50Ms": 13,
+      "latencyP95Ms": 18,
+      "avgPromptTokens": 146,
+      "avgCompletionTokens": 17,
       "judge": null,
       "failures": [
-        {
-          "id": "triage-25",
-          "prompt": "Ticket: What's the difference between the Pro and Team plans?",
-          "answer": "{\"category\":\"other\",\"priority\":\"medium\"}",
-          "reason": "fields: expected {\"category\":\"other\",\"priority\":\"low\"}, got {\"category\":\"other\",\"priority\":\"medium\"}"
-        },
         {
           "id": "triage-26",
           "prompt": "Ticket: The password rules on the signup page are confusing. It rejects my password without saying why.",
@@ -210,16 +197,16 @@
           "reason": "json: no valid JSON found in the response"
         }
       ],
-      "costPer1kUsd": 0.09846666666666666,
-      "accuracy": 0.7777777777777778,
+      "costPer1kUsd": 0.10765,
+      "accuracy": 0.8333333333333334,
       "diff": {
-        "est": -0.1111111111111111,
-        "lo": -0.3333333333333333,
+        "est": 0,
+        "lo": 0,
         "hi": 0
       },
-      "diffSd": 0.33333333333333337,
-      "costPerCorrect1kUsd": 0.1266,
-      "savings": 0.9571262699564587,
+      "diffSd": 0,
+      "costPerCorrect1kUsd": 0.12918,
+      "savings": 0.9557905544147844,
       "errorRate": 0,
       "verdict": "insufficient",
       "neededSamples": null
@@ -227,22 +214,22 @@
     {
       "id": "deepseek/deepseek-v4-flash",
       "role": "candidate",
-      "totalCostUsd": "0.000225260",
-      "correct": 5,
-      "n": 9,
+      "totalCostUsd": "0.000149240",
+      "correct": 3,
+      "n": 6,
       "accuracyCi": [
-        0.2666473457440297,
-        0.811224570528086
+        0.18761280689940868,
+        0.8123871931005913
       ],
       "qualityVsCurrent": {
-        "est": 0.625,
-        "lo": 0.25,
+        "est": 0.6,
+        "lo": 0.2,
         "hi": 1
       },
       "latencyP50Ms": 14,
-      "latencyP95Ms": 16,
-      "avgPromptTokens": 155,
-      "avgCompletionTokens": 12,
+      "latencyP95Ms": 19,
+      "avgPromptTokens": 157,
+      "avgCompletionTokens": 10,
       "judge": null,
       "failures": [
         {
@@ -264,16 +251,16 @@
           "reason": "json: no valid JSON found in the response"
         }
       ],
-      "costPer1kUsd": 0.02502888888888889,
-      "accuracy": 0.5555555555555556,
+      "costPer1kUsd": 0.024873333333333334,
+      "accuracy": 0.5,
       "diff": {
         "est": -0.3333333333333333,
         "lo": -0.6666666666666666,
         "hi": 0
       },
-      "diffSd": 0.5,
-      "costPerCorrect1kUsd": 0.045051999999999995,
-      "savings": 0.9891020803096274,
+      "diffSd": 0.5163977794943223,
+      "costPerCorrect1kUsd": 0.04974666666666667,
+      "savings": 0.9897850787132101,
       "errorRate": 0,
       "verdict": "insufficient",
       "neededSamples": null
@@ -281,23 +268,23 @@
   ],
   "recommendation": {
     "action": "need-more-data",
-    "model": "anthropic/claude-opus-5",
-    "savings": 0.47750362844702465,
+    "model": "google/gemini-3.8-flash",
+    "savings": 0.9557905544147844,
     "marginPts": 5,
     "neededSamples": null,
-    "headline": "claude-opus-5 looks promising, but 9 prompts cannot prove it.",
-    "detail": "It is 48% cheaper and not visibly worse, but the uncertainty still allows a real quality loss. Add more prompts, especially the hard ones, and run again.",
+    "headline": "gemini-3.8-flash looks promising, but 6 prompts cannot prove it.",
+    "detail": "It is 96% cheaper and not visibly worse, but the uncertainty still allows a real quality loss. Add more prompts, especially the hard ones, and run again.",
     "configChange": {
       "from": "openai/gpt-6-astra",
-      "to": "anthropic/claude-opus-5"
+      "to": "google/gemini-3.8-flash"
     }
   },
   "spend": {
-    "calls": 45,
-    "expectedUsd": "0.032860310",
+    "calls": 30,
+    "expectedUsd": "0.023257890",
     "judgeUsd": "0.000000000",
-    "actualUsd": "0.032862000",
-    "capUsd": "5.000000",
+    "actualUsd": "0.023260000",
+    "capUsd": "4.000000",
     "partial": false
   },
   "skipped": [],

@@ -5,3 +5,7 @@
 {"id":"2026-09-20T10-10-10-252Z","at":"2026-09-20T10:10:11.414Z","dataset":"Support tickets (sample)","action":"switch","current":"openai/gpt-6-astra","model":"anthropic/claude-opus-5","savings":0.47257194244604306}
 {"id":"2026-09-20T10-10-22-774Z","at":"2026-09-20T10:10:23.917Z","dataset":"Support tickets (sample)","action":"switch","current":"openai/gpt-6-astra","model":"anthropic/claude-opus-5","savings":0.47257194244604306}
 {"id":"2026-09-20T10-15-13-078Z","at":"2026-09-20T10:15:14.180Z","dataset":"Support tickets (sample)","action":"need-more-data","current":"openai/gpt-6-astra","model":"google/gemini-3.8-flash","savings":0.9526107239208633}
+{"id":"2026-09-20T11-23-10-336Z","at":"2026-09-20T11:23:11.105Z","dataset":"Support tickets (sample)","action":"need-more-data","current":"openai/gpt-6-astra","model":"google/gemini-3.8-flash","savings":0.9557905544147844}
+{"id":"2026-09-20T11-45-33-563Z","at":"2026-09-20T11:45:34.702Z","dataset":"Support tickets (sample)","action":"switch","current":"openai/gpt-6-astra","model":"anthropic/claude-opus-5","savings":0.47257194244604306}
+{"id":"2026-09-20T11-45-37-914Z","at":"2026-09-20T11:45:39.027Z","dataset":"Support tickets (sample)","action":"switch","current":"openai/gpt-6-astra","model":"anthropic/claude-opus-5","savings":0.47257194244604306}
+{"id":"2026-09-20T11-47-57-525Z","at":"2026-09-20T11:47:58.301Z","dataset":"Support tickets (sample)","action":"need-more-data","current":"openai/gpt-6-astra","model":"anthropic/claude-opus-5","savings":0.47750362844702465}

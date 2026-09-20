@@ -1,0 +1,355 @@
+{
+  "schema": "assay.bench/1",
+  "id": "2026-09-20T11-16-21-718Z",
+  "startedAt": "2026-09-20T11:16:21.718Z",
+  "finishedAt": "2026-09-20T11:16:22.804Z",
+  "durationMs": 1086,
+  "tool": {
+    "name": "assay",
+    "version": "0.1.0"
+  },
+  "gateway": {
+    "host": "127.0.0.1:50933"
+  },
+  "dataset": {
+    "name": "Support tickets (sample)",
+    "prompts": 36,
+    "requested": 36,
+    "judged": 6
+  },
+  "settings": {
+    "current": "openai/gpt-6-astra",
+    "marginPts": 5,
+    "minSamples": 20,
+    "minSavings": 0.1,
+    "maxTokens": 400
+  },
+  "trust": {
+    "audit": {
+      "id": "2026-09-20T11-16-20-560Z",
+      "fineness": 1000,
+      "grade": "Verified",
+      "coverage": 0.9,
+      "at": "2026-09-20T11:16:21.707Z",
+      "headline": "Authentication, billing, model identity, token counts and API behaviour held up."
+    },
+    "billing": {
+      "verdict": "ok",
+      "ratio": 1.0001518216459178,
+      "calls": 228,
+      "billedUsd": "0.112254000",
+      "expectedUsd": "0.112236960"
+    }
+  },
+  "models": [
+    {
+      "id": "openai/gpt-6-astra",
+      "role": "current",
+      "totalCostUsd": "0.088960000",
+      "correct": 33,
+      "n": 36,
+      "accuracyCi": [
+        0.7817298972308114,
+        0.9712519107287082
+      ],
+      "qualityVsCurrent": {
+        "est": 1,
+        "lo": 1,
+        "hi": 1
+      },
+      "latencyP50Ms": 12,
+      "latencyP95Ms": 15,
+      "avgPromptTokens": 135,
+      "avgCompletionTokens": 22,
+      "judge": null,
+      "failures": [
+        {
+          "id": "triage-01",
+          "prompt": "Ticket: I was charged twice for my March subscription. Please refund the duplicate charge.",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-15",
+          "prompt": "Ticket: Our security team requires SSO with Okta before we can roll this out to 200 employees. Is it on your roadmap?",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-26",
+          "prompt": "Ticket: The password rules on the signup page are confusing. It rejects my password without saying why.",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        }
+      ],
+      "costPer1kUsd": 2.471111111111111,
+      "accuracy": 0.9166666666666666,
+      "diff": null,
+      "diffSd": null,
+      "costPerCorrect1kUsd": 2.695757575757576,
+      "savings": 0,
+      "errorRate": 0,
+      "verdict": "current",
+      "neededSamples": null
+    },
+    {
+      "id": "anthropic/claude-haiku-4.5",
+      "role": "candidate",
+      "totalCostUsd": "0.007423200",
+      "correct": 31,
+      "n": 36,
+      "accuracyCi": [
+        0.7134014871960681,
+        0.9391827463688489
+      ],
+      "qualityVsCurrent": {
+        "est": 0.9393939393939394,
+        "lo": 0.8387096774193549,
+        "hi": 1
+      },
+      "latencyP50Ms": 12,
+      "latencyP95Ms": 16,
+      "avgPromptTokens": 142,
+      "avgCompletionTokens": 23,
+      "judge": {
+        "model": "google/gemini-3.8-flash",
+        "pairs": 6,
+        "invalid": 0,
+        "positionBiased": 1
+      },
+      "failures": [
+        {
+          "id": "triage-01",
+          "prompt": "Ticket: I was charged twice for my March subscription. Please refund the duplicate charge.",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-15",
+          "prompt": "Ticket: Our security team requires SSO with Okta before we can roll this out to 200 employees. Is it on your roadmap?",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-16",
+          "prompt": "Ticket: It says my account is locked after 3 login attempts. I have a client presentation in an hour and everything is in there.",
+          "answer": "{\"category\":\"account_access\",\"priority\":\"urgent\"}",
+          "reason": "fields: expected {\"category\":\"account_access\",\"priority\":\"high\"}, got {\"category\":\"account_access\",\"priority\":\"urgent\"}"
+        }
+      ],
+      "costPer1kUsd": 0.2062,
+      "accuracy": 0.8611111111111112,
+      "diff": {
+        "est": -0.05555555555555555,
+        "lo": -0.1388888888888889,
+        "hi": 0
+      },
+      "diffSd": 0.2323106841457232,
+      "costPerCorrect1kUsd": 0.239458064516129,
+      "savings": 0.9165557553956835,
+      "errorRate": 0,
+      "verdict": "inconclusive",
+      "neededSamples": null
+    },
+    {
+      "id": "google/gemini-3.8-flash",
+      "role": "candidate",
+      "totalCostUsd": "0.004215750",
+      "correct": 32,
+      "n": 36,
+      "accuracyCi": [
+        0.7468487098496367,
+        0.9559343109125816
+      ],
+      "qualityVsCurrent": {
+        "est": 0.9696969696969697,
+        "lo": 0.9,
+        "hi": 1
+      },
+      "latencyP50Ms": 12,
+      "latencyP95Ms": 15,
+      "avgPromptTokens": 129,
+      "avgCompletionTokens": 21,
+      "judge": {
+        "model": "anthropic/claude-haiku-4.5",
+        "pairs": 6,
+        "invalid": 0,
+        "positionBiased": 1
+      },
+      "failures": [
+        {
+          "id": "triage-01",
+          "prompt": "Ticket: I was charged twice for my March subscription. Please refund the duplicate charge.",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-15",
+          "prompt": "Ticket: Our security team requires SSO with Okta before we can roll this out to 200 employees. Is it on your roadmap?",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-25",
+          "prompt": "Ticket: What's the difference between the Pro and Team plans?",
+          "answer": "{\"category\":\"other\",\"priority\":\"medium\"}",
+          "reason": "fields: expected {\"category\":\"other\",\"priority\":\"low\"}, got {\"category\":\"other\",\"priority\":\"medium\"}"
+        }
+      ],
+      "costPer1kUsd": 0.11710416666666668,
+      "accuracy": 0.8888888888888888,
+      "diff": {
+        "est": -0.027777777777777776,
+        "lo": -0.08333333333333333,
+        "hi": 0
+      },
+      "diffSd": 0.1666666666666666,
+      "costPerCorrect1kUsd": 0.13174218750000002,
+      "savings": 0.9526107239208633,
+      "errorRate": 0,
+      "verdict": "inconclusive",
+      "neededSamples": 217
+    },
+    {
+      "id": "openai/gpt-6-mini",
+      "role": "candidate",
+      "totalCostUsd": "0.001131150",
+      "correct": 20,
+      "n": 36,
+      "accuracyCi": [
+        0.3958078731600341,
+        0.7045897012345685
+      ],
+      "qualityVsCurrent": {
+        "est": 0.6060606060606061,
+        "lo": 0.43333333333333335,
+        "hi": 0.7714285714285715
+      },
+      "latencyP50Ms": 12,
+      "latencyP95Ms": 15,
+      "avgPromptTokens": 135,
+      "avgCompletionTokens": 19,
+      "judge": {
+        "model": "anthropic/claude-haiku-4.5",
+        "pairs": 6,
+        "invalid": 0,
+        "positionBiased": 0
+      },
+      "failures": [
+        {
+          "id": "triage-01",
+          "prompt": "Ticket: I was charged twice for my March subscription. Please refund the duplicate charge.",
+          "answer": "Thanks for reaching out, and I am sorry about the trouble. I have escalated this to the right team and you will hear back from us with an update as soon as we h…",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-03",
+          "prompt": "Ticket: The app crashes every time I open the export screen. I've reinstalled twice and it still happens. I need to send a report to my clie…",
+          "answer": "{\"category\":\"account_access\",\"priority\":\"high\"}",
+          "reason": "fields: expected {\"category\":\"bug\",\"priority\":\"high\"}, got {\"category\":\"account_access\",\"priority\":\"high\"}"
+        },
+        {
+          "id": "triage-07",
+          "prompt": "Ticket: Someone logged into my account from another country and changed my email address. I think I've been hacked!",
+          "answer": "{\"category\":\"billing\",\"priority\":\"urgent\"}",
+          "reason": "fields: expected {\"category\":\"account_access\",\"priority\":\"urgent\"}, got {\"category\":\"billing\",\"priority\":\"urgent\"}"
+        }
+      ],
+      "costPer1kUsd": 0.031420833333333335,
+      "accuracy": 0.5555555555555556,
+      "diff": {
+        "est": -0.3611111111111111,
+        "lo": -0.5277777777777778,
+        "hi": -0.19444444444444445
+      },
+      "diffSd": 0.4871361075732194,
+      "costPerCorrect1kUsd": 0.056557500000000004,
+      "savings": 0.9872847347122302,
+      "errorRate": 0,
+      "verdict": "worse",
+      "neededSamples": null
+    },
+    {
+      "id": "deepseek/deepseek-v4-flash",
+      "role": "candidate",
+      "totalCostUsd": "0.000799260",
+      "correct": 15,
+      "n": 36,
+      "accuracyCi": [
+        0.2714033350508729,
+        0.5780003033572231
+      ],
+      "qualityVsCurrent": {
+        "est": 0.45454545454545453,
+        "lo": 0.2903225806451613,
+        "hi": 0.6285714285714286
+      },
+      "latencyP50Ms": 12,
+      "latencyP95Ms": 15,
+      "avgPromptTokens": 138,
+      "avgCompletionTokens": 10,
+      "judge": {
+        "model": "anthropic/claude-haiku-4.5",
+        "pairs": 6,
+        "invalid": 0,
+        "positionBiased": 0
+      },
+      "failures": [
+        {
+          "id": "triage-01",
+          "prompt": "Ticket: I was charged twice for my March subscription. Please refund the duplicate charge.",
+          "answer": "Ok, we will look into it.",
+          "reason": "json: no valid JSON found in the response"
+        },
+        {
+          "id": "triage-05",
+          "prompt": "Ticket: It would be great if you could add dark mode to the mobile app.",
+          "answer": "{\"category\":\"feature_request\",\"priority\":\"medium\"}",
+          "reason": "fields: expected {\"category\":\"feature_request\",\"priority\":\"low\"}, got {\"category\":\"feature_request\",\"priority\":\"medium\"}"
+        },
+        {
+          "id": "triage-06",
+          "prompt": "Ticket: I forgot my password and the reset email never arrives. I've checked spam and I can't get into my account at all.",
+          "answer": "{\"category\":\"account_access\",\"priority\":\"urgent\"}",
+          "reason": "fields: expected {\"category\":\"account_access\",\"priority\":\"high\"}, got {\"category\":\"account_access\",\"priority\":\"urgent\"}"
+        }
+      ],
+      "costPer1kUsd": 0.022201666666666668,
+      "accuracy": 0.4166666666666667,
+      "diff": {
+        "est": -0.5,
+        "lo": -0.6666666666666666,
+        "hi": -0.3333333333333333
+      },
+      "diffSd": 0.50709255283711,
+      "costPerCorrect1kUsd": 0.053284,
+      "savings": 0.991015512589928,
+      "errorRate": 0,
+      "verdict": "worse",
+      "neededSamples": null
+    }
+  ],
+  "recommendation": {
+    "action": "need-more-data",
+    "model": "google/gemini-3.8-flash",
+    "savings": 0.9526107239208633,
+    "marginPts": 5,
+    "neededSamples": 217,
+    "headline": "gemini-3.8-flash looks promising, but 36 prompts cannot prove it.",
+    "detail": "It is 95% cheaper and not visibly worse, yet the uncertainty still allows a real quality loss. If the pattern holds, about 217 prompts would settle it. Add more to your dataset and run again.",
+    "configChange": {
+      "from": "openai/gpt-6-astra",
+      "to": "google/gemini-3.8-flash"
+    }
+  },
+  "spend": {
+    "calls": 228,
+    "expectedUsd": "0.112236960",
+    "judgeUsd": "0.009707600",
+    "actualUsd": "0.112254000",
+    "capUsd": "5.000000",
+    "partial": false
+  },
+  "skipped": [],
+  "notes": []
+}

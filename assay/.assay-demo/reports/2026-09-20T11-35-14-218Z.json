@@ -1,9 +1,9 @@
 {
   "schema": "assay.report/1",
-  "id": "2026-09-20T11-35-25-941Z",
-  "startedAt": "2026-09-20T11:35:25.941Z",
-  "finishedAt": "2026-09-20T11:35:27.052Z",
-  "durationMs": 1111,
+  "id": "2026-09-20T11-35-14-218Z",
+  "startedAt": "2026-09-20T11:35:14.218Z",
+  "finishedAt": "2026-09-20T11:35:15.333Z",
+  "durationMs": 1115,
   "tool": {
     "name": "assay",
     "version": "0.1.0"
@@ -50,10 +50,10 @@
       "method": "Reads GET /key and GET /auth/key, checks the two agree, then sends a deliberately invalid key and expects 401 or 403.",
       "limits": "Does not test key rotation, per-key limits enforcement or wallet-signed keys.",
       "status": "pass",
-      "summary": "Balance $4.853541 readable; invalid key rejected (401).",
+      "summary": "Balance $4.858709 readable; invalid key rejected (401).",
       "measured": {
-        "available": "4.853541000",
-        "used": "0.146458000",
+        "available": "4.858709000",
+        "used": "0.141290000",
         "balanceDecimals": 6,
         "rateLimit": {
           "requestsPerMinute": 120,
@@ -61,7 +61,7 @@
         },
         "badKeyStatus": 401
       },
-      "durationMs": 10
+      "durationMs": 7
     },
     {
       "id": "catalog",
@@ -87,7 +87,7 @@
         "issueCount": 0,
         "skipped": []
       },
-      "durationMs": 41
+      "durationMs": 42
     },
     {
       "id": "billing",
@@ -96,36 +96,36 @@
       "method": "Reads the balance, sends fixed ~450-token canary calls, waits for the charge to land, then compares the balance drop with Σ(tokens × catalog price) in exact decimals. Tolerance is 2% plus one unit of balance precision per call. A failure needs two independent batches to agree.",
       "limits": "Only sees charges on this key: other clients using it during the audit look like overcharging (use a dedicated key). Assumes metered usage is billed at catalog rate; the discount is applied when credit is purchased.",
       "status": "pass",
-      "summary": "Billed $0.001298000 for $0.001297100 of catalog-priced usage over 6 calls (1.001× catalog). Funds conserved.",
+      "summary": "Billed $0.001297000 for $0.001297100 of catalog-priced usage over 6 calls (1.000× catalog). Funds conserved.",
       "measured": {
-        "ratio": 1.000693855523861,
-        "billed": "0.001298000",
+        "ratio": 0.9999229049417933,
+        "billed": "0.001297000",
         "expected": "0.001297100",
         "calls": 6,
         "balanceResolution": "0.000001000",
-        "settleWaitMs": 420,
+        "settleWaitMs": 422,
         "batches": 1
       },
       "details": {
         "batches": [
           {
             "verdict": "ok",
-            "ratio": 1.000693855523861,
-            "billed": "0.001298000",
+            "ratio": 0.9999229049417933,
+            "billed": "0.001297000",
             "expected": "0.001297100",
             "calls": 6,
             "settled": true,
             "budgetStopped": false,
             "conservation": {
               "ok": true,
-              "deltaAvailable": "0.001298000",
-              "deltaUsed": "0.001298000"
+              "deltaAvailable": "0.001297000",
+              "deltaUsed": "0.001297000"
             },
             "reportedCost": null
           }
         ]
       },
-      "durationMs": 715
+      "durationMs": 722
     },
     {
       "id": "identity",
@@ -186,7 +186,7 @@
         "duplicateIds": 0,
         "baselineMismatch": []
       },
-      "durationMs": 82
+      "durationMs": 79
     },
     {
       "id": "tokens",
@@ -237,7 +237,7 @@
           {
             "name": "streaming",
             "severity": "pass",
-            "message": "5 chunks, first event in 16 ms, [DONE] and usage present"
+            "message": "5 chunks, first event in 15 ms, [DONE] and usage present"
           },
           {
             "name": "tool-calls",
@@ -251,7 +251,7 @@
           }
         ]
       },
-      "durationMs": 34
+      "durationMs": 33
     },
     {
       "id": "latency",
@@ -270,41 +270,41 @@
       "details": {
         "floor": {
           "n": 10,
-          "min": 1.8478330001235008,
-          "p50": 2.0638329999055713,
-          "p95": 2.516118749952875,
-          "max": 2.5931249998975545,
-          "mean": 2.117291499953717
+          "min": 1.3717090000864118,
+          "p50": 2.1890414998633787,
+          "p95": 3.399924999964422,
+          "max": 4.0989999999292195,
+          "mean": 2.330074999970384
         },
         "perModel": {
           "anthropic/claude-haiku-4.5": {
             "n": 2,
-            "min": 11.584333000006154,
-            "p50": 12.10218749998603,
-            "p95": 12.568256549967918,
-            "max": 12.620041999965906,
-            "mean": 12.10218749998603
+            "min": 13.472291000187397,
+            "p50": 13.74172900011763,
+            "p95": 13.984223200054839,
+            "max": 14.011167000047863,
+            "mean": 13.74172900011763
           },
           "openai/gpt-6-mini": {
             "n": 2,
-            "min": 13.046875,
-            "p50": 13.26874999993015,
-            "p95": 13.468437499867287,
-            "max": 13.490624999860302,
-            "mean": 13.26874999993015
+            "min": 15.275667000096291,
+            "p50": 15.319938000058755,
+            "p95": 15.359781900024974,
+            "max": 15.36420900002122,
+            "mean": 15.319938000058755
           },
           "google/gemini-3.8-flash": {
             "n": 2,
-            "min": 13.19137499993667,
-            "p50": 14.29156249994412,
-            "p95": 15.281731249950827,
-            "max": 15.391749999951571,
-            "mean": 14.29156249994412
+            "min": 12.715416999999434,
+            "p50": 14.096667000092566,
+            "p95": 15.339792000176384,
+            "max": 15.477917000185698,
+            "mean": 14.096667000092566
           }
         },
         "selfReported": []
       },
-      "durationMs": 25
+      "durationMs": 26
     }
   ],
   "records": [
@@ -328,7 +328,7 @@
       "ok": true,
       "promptTokens": 12,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 14,
       "expectedUsd": "0.000003000",
       "billedUsd": null
     },
@@ -340,7 +340,7 @@
       "ok": true,
       "promptTokens": 11,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 12,
       "expectedUsd": "0.000010800",
       "billedUsd": null
     },
@@ -352,7 +352,7 @@
       "ok": true,
       "promptTokens": 520,
       "completionTokens": 2,
-      "latencyMs": 12,
+      "latencyMs": 14,
       "expectedUsd": "0.000424000",
       "billedUsd": "0.000000000"
     },
@@ -364,7 +364,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 15,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -376,7 +376,7 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 15,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.000000000"
     },
@@ -400,7 +400,7 @@
       "ok": true,
       "promptTokens": 495,
       "completionTokens": 2,
-      "latencyMs": 13,
+      "latencyMs": 15,
       "expectedUsd": "0.000075450",
       "billedUsd": "0.000000000"
     },
@@ -412,7 +412,7 @@
       "ok": true,
       "promptTokens": 472,
       "completionTokens": 2,
-      "latencyMs": 15,
+      "latencyMs": 13,
       "expectedUsd": "0.000149100",
       "billedUsd": "0.001298000"
     },
@@ -424,7 +424,7 @@
       "ok": true,
       "promptTokens": 99,
       "completionTokens": 1,
-      "latencyMs": 13,
+      "latencyMs": 12,
       "expectedUsd": "0.000083200",
       "billedUsd": null
     },
@@ -436,7 +436,7 @@
       "ok": true,
       "promptTokens": 99,
       "completionTokens": 1,
-      "latencyMs": 14,
+      "latencyMs": 13,
       "expectedUsd": "0.000083200",
       "billedUsd": null
     },
@@ -460,7 +460,7 @@
       "ok": true,
       "promptTokens": 84,
       "completionTokens": 1,
-      "latencyMs": 13,
+      "latencyMs": 12,
       "expectedUsd": "0.000013200",
       "billedUsd": null
     },
@@ -472,7 +472,7 @@
       "ok": true,
       "promptTokens": 67,
       "completionTokens": 1,
-      "latencyMs": 14,
+      "latencyMs": 12,
       "expectedUsd": "0.000023850",
       "billedUsd": null
     },
@@ -484,7 +484,7 @@
       "ok": true,
       "promptTokens": 67,
       "completionTokens": 1,
-      "latencyMs": 13,
+      "latencyMs": 14,
       "expectedUsd": "0.000023850",
       "billedUsd": null
     }
