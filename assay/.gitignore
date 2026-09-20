@@ -5,3 +5,4 @@ node_modules/
 !.env.example
 *.log
 scorecard.html
+PRODUCTS.md
