@@ -1,0 +1,7 @@
+node_modules/
+.assay/
+.env
+.env.*
+!.env.example
+*.log
+scorecard.html

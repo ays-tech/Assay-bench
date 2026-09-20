@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Assay · verify the gateway, then pick the model</title>
+  <meta name="description" content="Assay verifies that an inference gateway bills what it lists and serves the model you asked for, then benchmarks cheaper models on your own prompts and shows what you would save.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M5 2h22q3 0 3 3v14c0 6-6 9-14 11C8 28 2 25 2 19V5q0-3 3-3z' fill='%23D3F85A' stroke='%230F0F0E' stroke-width='2'/%3E%3Cpath d='M9 16l5 5 9-11' fill='none' stroke='%230F0F0E' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the content</a>
+
+  <div class="ann">
+    <div class="wrap ann-inner">
+      <span class="live">Assay</span><span class="sep">|</span>
+      <span><strong>Verify the gateway.</strong> Then pick the model.</span><span class="sep">|</span>
+      <span class="dim">Independent tool for the Orbio hackathon, not operated by Orbio</span>
+    </div>
+  </div>
+
+  <header class="bar">
+    <div class="wrap bar-inner">
+      <a class="brand" href="#/" aria-label="Assay, overview">
+        <svg viewBox="0 0 32 36" aria-hidden="true"><path d="M5 2h22q3 0 3 3v15c0 7-6 11-14 14C8 29 2 25 2 18V5q0-3 3-3z" fill="#D3F85A" stroke="#0F0F0E" stroke-width="2.2"/><path d="M9.5 16.5l4.5 4.5 8-9.5" fill="none" stroke="#0F0F0E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Assay
+      </a>
+      <nav aria-label="Views">
+        <a href="#/" data-nav="home">Overview</a>
+        <a href="#/audit" data-nav="audit">Audit</a>
+        <a href="#/bench" data-nav="bench">Bench</a>
+        <a href="#/estimator" data-nav="estimator">Estimator</a>
+      </nav>
+      <div class="bar-right">
+        <span id="gw-pill" class="pill" hidden></span>
+        <button id="run-btn" class="btn small" type="button" hidden>Run audit</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div data-view="home">
+      <div id="home-root"></div>
+    </div>
+
+    <div data-view="audit" hidden>
+      <section id="report" class="wrap" aria-labelledby="verdict">
+        <div id="report-root" aria-live="polite">
+          <p class="loading">Loading the latest audit…</p>
+        </div>
+      </section>
+
+      <section id="evidence" class="wrap" aria-labelledby="evidence-title" hidden>
+        <h2 id="evidence-title">Evidence</h2>
+        <div id="evidence-root" class="evidence-grid"></div>
+      </section>
+    </div>
+
+    <div data-view="bench" hidden>
+      <section id="bench" class="wrap" aria-labelledby="bench-title">
+        <div id="bench-root"></div>
+      </section>
+    </div>
+
+    <div data-view="estimator" hidden>
+      <section id="estimator" class="wrap" aria-labelledby="estimator-title">
+        <h2 id="estimator-title">What would your workload cost?</h2>
+        <p class="lede">Billing is metered at catalog rates. The discount comes from the price you pay when you buy credit, and Orbio adds a 5% platform fee on top, so the saving you keep is smaller than the headline.</p>
+        <div id="estimator-root"></div>
+      </section>
+    </div>
+
+    <div data-view="method" hidden>
+      <section id="method" class="wrap" aria-labelledby="method-title">
+        <div class="method-wrap">
+<h2 id="method-title">What Assay can and cannot prove</h2>
+        <div class="method">
+          <div>
+            <h3>The audit</h3>
+            <p>Assay is an agent, not a script. It reads your balance and the model catalog, picks the cheapest viable model from several vendors, proves each one can answer, and spends a few cents on fixed public prompts. It compares what the gateway <em>says</em> with what your balance <em>does</em>. If something looks wrong it re-runs a larger sample before calling it a failure.</p>
+            <p>Money is computed in exact decimals, never floating point. A charge lands after the answer it pays for, so Assay waits for the balance to settle before comparing.</p>
+            <p>The score, fineness, is purity in parts per thousand, as on a hallmark. Checks that could not run are excluded and shown as lower coverage, so a clean result on little evidence never looks like a strong one.</p>
+            <h3>The benchmark</h3>
+            <p>Bench replays your own prompts against several models through the same key, and grades each answer. Hard checks (valid JSON, schema, exact fields) are deterministic. For fuzzy answers a judge model compares each candidate with your current model twice, with the order swapped, and never sits in the same vendor family as either.</p>
+            <p>It recommends a switch only when the <em>pessimistic</em> end of a 95% interval on the quality difference stays inside the margin you choose. Otherwise it says how many more prompts would settle the question. Change the margin on the Bench page and the answer re-decides live.</p>
+          </div>
+          <div>
+            <h3>What it cannot tell you</h3>
+            <ul>
+              <li>Whether prompts are stored. That is invisible from outside; Orbio's claim stands or falls on trust.</li>
+              <li>Which model weights actually ran. It detects mislabelling and gross substitution, not a careful imitation.</li>
+              <li>Whether other clients on your key were active during the audit. Use a dedicated key.</li>
+              <li>Added latency, unless you supply a direct baseline key. Without one, it reports the gateway round-trip only.</li>
+              <li>How a model behaves on prompts you did not test. A benchmark is only as representative as the sample you give it; include your hard cases.</li>
+              <li>Whether an LLM judge agrees with you. Judges have biases; Bench reports how often the judge changed its mind when the order flipped.</li>
+            </ul>
+          </div>
+        </div>
+      
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="wrap foot">
+    <p id="foot-note">Assay is an independent tool built for the Orbio agent hackathon. It is not operated by Orbio.</p>
+    <p><a href="#/method">What Assay can and cannot prove</a></p>
+  </footer>
+
+  <script type="module" src="/assets/app.js"></script>
+</body>
+</html>

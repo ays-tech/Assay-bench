@@ -1,0 +1,493 @@
+{
+  "schema": "assay.report/1",
+  "id": "2026-09-20T10-15-11-917Z",
+  "startedAt": "2026-09-20T10:15:11.917Z",
+  "finishedAt": "2026-09-20T10:15:13.068Z",
+  "durationMs": 1151,
+  "tool": {
+    "name": "assay",
+    "version": "0.1.0"
+  },
+  "gateway": {
+    "host": "127.0.0.1:62775",
+    "priceUnit": "per_token",
+    "catalogSize": 7,
+    "baseline": false
+  },
+  "keyFingerprint": "0a133632",
+  "models": [
+    "anthropic/claude-haiku-4.5",
+    "openai/gpt-6-mini",
+    "google/gemini-3.8-flash"
+  ],
+  "plan": {
+    "models": [
+      "anthropic/claude-haiku-4.5",
+      "openai/gpt-6-mini",
+      "google/gemini-3.8-flash"
+    ],
+    "skipped": []
+  },
+  "spend": {
+    "calls": 15,
+    "expectedUsd": "0.001569000",
+    "actualUsd": "0.001723000",
+    "capUsd": "5.000000"
+  },
+  "score": {
+    "fineness": 1000,
+    "grade": "Verified",
+    "coverage": 0.9,
+    "capped": false,
+    "confidence": "high"
+  },
+  "headline": "Authentication, billing, model identity, token counts and API behaviour held up.",
+  "checks": [
+    {
+      "id": "auth",
+      "title": "Credentials and balance endpoint",
+      "weight": 5,
+      "method": "Reads GET /key and GET /auth/key, checks the two agree, then sends a deliberately invalid key and expects 401 or 403.",
+      "limits": "Does not test key rotation, per-key limits enforcement or wallet-signed keys.",
+      "status": "pass",
+      "summary": "Balance $5.000000 readable; invalid key rejected (401).",
+      "measured": {
+        "available": "5.000000000",
+        "used": "0.000000000",
+        "balanceDecimals": 6,
+        "rateLimit": {
+          "requestsPerMinute": 120,
+          "concurrent": 32
+        },
+        "badKeyStatus": 401
+      },
+      "durationMs": 33
+    },
+    {
+      "id": "catalog",
+      "title": "Model catalog and audit plan",
+      "weight": 5,
+      "method": "Fetches GET /models, verifies ids are unique and prices are finite and non-negative, detects the price unit, then selects the cheapest viable model from each of several vendors. Every chosen model must answer a tiny preflight call; ones that cannot are skipped, reported, and replaced.",
+      "limits": "Cannot confirm catalog prices equal the providers' list prices; the billing check verifies what you are actually charged.",
+      "status": "pass",
+      "summary": "7 models (0 unpriced), prices in USD per token. Auditing anthropic/claude-haiku-4.5, openai/gpt-6-mini, google/gemini-3.8-flash across 3 vendors.",
+      "measured": {
+        "models": 7,
+        "unpriced": 0,
+        "priceUnit": "per_token",
+        "selected": [
+          "anthropic/claude-haiku-4.5",
+          "openai/gpt-6-mini",
+          "google/gemini-3.8-flash"
+        ],
+        "skipped": 0
+      },
+      "details": {
+        "issues": [],
+        "issueCount": 0,
+        "skipped": []
+      },
+      "durationMs": 46
+    },
+    {
+      "id": "billing",
+      "title": "Billing matches catalog price",
+      "weight": 30,
+      "method": "Reads the balance, sends fixed ~450-token canary calls, waits for the charge to land, then compares the balance drop with Σ(tokens × catalog price) in exact decimals. Tolerance is 2% plus one unit of balance precision per call. A failure needs two independent batches to agree.",
+      "limits": "Only sees charges on this key: other clients using it during the audit look like overcharging (use a dedicated key). Assumes metered usage is billed at catalog rate; the discount is applied when credit is purchased.",
+      "status": "pass",
+      "summary": "Billed $0.001297000 for $0.001297100 of catalog-priced usage over 6 calls (1.000× catalog). Funds conserved.",
+      "measured": {
+        "ratio": 0.9999229049417933,
+        "billed": "0.001297000",
+        "expected": "0.001297100",
+        "calls": 6,
+        "balanceResolution": "0.000001000",
+        "settleWaitMs": 421,
+        "batches": 1
+      },
+      "details": {
+        "batches": [
+          {
+            "verdict": "ok",
+            "ratio": 0.9999229049417933,
+            "billed": "0.001297000",
+            "expected": "0.001297100",
+            "calls": 6,
+            "settled": true,
+            "budgetStopped": false,
+            "conservation": {
+              "ok": true,
+              "deltaAvailable": "0.001297000",
+              "deltaUsed": "0.001297000"
+            },
+            "reportedCost": null
+          }
+        ]
+      },
+      "durationMs": 723
+    },
+    {
+      "id": "identity",
+      "title": "The model you ask for answers",
+      "weight": 20,
+      "method": "Compares the returned model name with the requested id and vendor family, checks response ids are unique, and sends a Unicode/code stress prompt whose prompt-token count acts as a tokenizer fingerprint: it must be stable per model and differ across vendors. With a baseline key it must equal the count from the provider directly.",
+      "limits": "Detects mislabelling and gross substitution. It cannot prove which weights ran, and a gateway that fakes both the name and the token count would pass.",
+      "status": "pass",
+      "summary": "15 responses named the requested model across 3 vendors; fingerprints stable and distinct.",
+      "measured": {
+        "responses": 15,
+        "fingerprints": {
+          "anthropic/claude-haiku-4.5": [
+            99,
+            99
+          ],
+          "openai/gpt-6-mini": [
+            84,
+            84
+          ],
+          "google/gemini-3.8-flash": [
+            67,
+            67
+          ]
+        },
+        "baselineCompared": 0
+      },
+      "details": {
+        "declared": {
+          "anthropic/claude-haiku-4.5": {
+            "match": 5,
+            "sameFamily": 0,
+            "mismatch": 0,
+            "unknown": 0,
+            "returned": [
+              "claude-haiku-4-5-20251001"
+            ]
+          },
+          "openai/gpt-6-mini": {
+            "match": 5,
+            "sameFamily": 0,
+            "mismatch": 0,
+            "unknown": 0,
+            "returned": [
+              "gpt-6-mini-2026-08-01"
+            ]
+          },
+          "google/gemini-3.8-flash": {
+            "match": 5,
+            "sameFamily": 0,
+            "mismatch": 0,
+            "unknown": 0,
+            "returned": [
+              "gemini-3.8-flash-001"
+            ]
+          }
+        },
+        "duplicateIds": 0,
+        "baselineMismatch": []
+      },
+      "durationMs": 86
+    },
+    {
+      "id": "tokens",
+      "title": "Token accounting is honest",
+      "weight": 15,
+      "method": "Applies invariants to every response: completion ≤ max_tokens, total = prompt + completion, prompt tokens plausible for a known ASCII prompt, stable across repeats, and not an outlier against other vendors.",
+      "limits": "A small (< 2×), consistent inflation cannot be told apart from a different tokenizer without a direct-to-provider baseline key.",
+      "status": "pass",
+      "summary": "All 15 calls passed every usage invariant.",
+      "measured": {
+        "calls": 15,
+        "violations": 0,
+        "canaryPromptTokens": {
+          "anthropic/claude-haiku-4.5": [
+            520,
+            520
+          ],
+          "openai/gpt-6-mini": [
+            495,
+            495
+          ],
+          "google/gemini-3.8-flash": [
+            472,
+            472
+          ]
+        }
+      },
+      "details": {
+        "violations": []
+      },
+      "durationMs": 1
+    },
+    {
+      "id": "compat",
+      "title": "OpenAI-compatible behaviour",
+      "weight": 15,
+      "method": "Streams a completion and inspects the SSE (deltas, [DONE], final usage chunk); forces a tool call and validates the JSON arguments; requests a nonexistent model and expects a 4xx error envelope.",
+      "limits": "Does not test vision, audio, files, structured-output healing or provider-specific parameters.",
+      "status": "pass",
+      "summary": "Streaming, forced tool call and error envelope all behave like the OpenAI API (anthropic/claude-haiku-4.5).",
+      "measured": {
+        "streaming": "pass",
+        "tool-calls": "pass",
+        "error-envelope": "pass"
+      },
+      "details": {
+        "items": [
+          {
+            "name": "streaming",
+            "severity": "pass",
+            "message": "5 chunks, first event in 16 ms, [DONE] and usage present"
+          },
+          {
+            "name": "tool-calls",
+            "severity": "pass",
+            "message": "anthropic/claude-haiku-4.5: valid tool call with JSON arguments"
+          },
+          {
+            "name": "error-envelope",
+            "severity": "pass",
+            "message": "unknown model → 404 with an error envelope"
+          }
+        ]
+      },
+      "durationMs": 34
+    },
+    {
+      "id": "latency",
+      "title": "Added latency",
+      "weight": 10,
+      "method": "With a baseline key (ASSAY_BASELINE_KEY, a direct OpenRouter key): alternates identical tiny requests through Orbio and directly, and bootstraps a 95% interval for the difference of medians. Without one: reports the gateway's own round-trip on /key (no model involved) and per-model latency, which bound but do not isolate the overhead.",
+      "limits": "Overhead cannot be isolated without a baseline. Results include your own network distance to each endpoint and vary by region and time of day.",
+      "status": "info",
+      "summary": "Gateway round-trip p50 2 ms (p95 2 ms) on /key with no model involved. Set ASSAY_BASELINE_KEY to measure the added latency against the provider directly.",
+      "measured": {
+        "floorP50": 2,
+        "floorP95": 2,
+        "claimMs": 50,
+        "selfReportedMs": null
+      },
+      "details": {
+        "floor": {
+          "n": 10,
+          "min": 0.8135839999999916,
+          "p50": 2.033895500000085,
+          "p95": 2.369467149999866,
+          "max": 2.418666999999914,
+          "mean": 1.9657085000000052
+        },
+        "perModel": {
+          "anthropic/claude-haiku-4.5": {
+            "n": 2,
+            "min": 14.866167000000019,
+            "p50": 15.417583499999978,
+            "p95": 15.913858349999941,
+            "max": 15.968999999999937,
+            "mean": 15.417583499999978
+          },
+          "openai/gpt-6-mini": {
+            "n": 2,
+            "min": 11.443624999999997,
+            "p50": 12.58662499999997,
+            "p95": 13.615324999999945,
+            "max": 13.729624999999942,
+            "mean": 12.58662499999997
+          },
+          "google/gemini-3.8-flash": {
+            "n": 2,
+            "min": 12.950333,
+            "p50": 13.306771000000026,
+            "p95": 13.62756520000005,
+            "max": 13.663209000000052,
+            "mean": 13.306771000000026
+          }
+        },
+        "selfReported": []
+      },
+      "durationMs": 23
+    }
+  ],
+  "records": [
+    {
+      "tag": "preflight",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 12,
+      "completionTokens": 2,
+      "latencyMs": 16,
+      "expectedUsd": "0.000017600",
+      "billedUsd": null
+    },
+    {
+      "tag": "preflight",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 12,
+      "completionTokens": 2,
+      "latencyMs": 12,
+      "expectedUsd": "0.000003000",
+      "billedUsd": null
+    },
+    {
+      "tag": "preflight",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 11,
+      "completionTokens": 2,
+      "latencyMs": 14,
+      "expectedUsd": "0.000010800",
+      "billedUsd": null
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 520,
+      "completionTokens": 2,
+      "latencyMs": 15,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 11,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
+      "completionTokens": 2,
+      "latencyMs": 14,
+      "expectedUsd": "0.000149100",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 520,
+      "completionTokens": 2,
+      "latencyMs": 16,
+      "expectedUsd": "0.000424000",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 495,
+      "completionTokens": 2,
+      "latencyMs": 14,
+      "expectedUsd": "0.000075450",
+      "billedUsd": "0.000000000"
+    },
+    {
+      "tag": "billing",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 472,
+      "completionTokens": 2,
+      "latencyMs": 13,
+      "expectedUsd": "0.000149100",
+      "billedUsd": "0.001298000"
+    },
+    {
+      "tag": "fingerprint",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 99,
+      "completionTokens": 1,
+      "latencyMs": 14,
+      "expectedUsd": "0.000083200",
+      "billedUsd": null
+    },
+    {
+      "tag": "fingerprint",
+      "source": "gateway",
+      "model": "anthropic/claude-haiku-4.5",
+      "respModel": "claude-haiku-4-5-20251001",
+      "ok": true,
+      "promptTokens": 99,
+      "completionTokens": 1,
+      "latencyMs": 13,
+      "expectedUsd": "0.000083200",
+      "billedUsd": null
+    },
+    {
+      "tag": "fingerprint",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 84,
+      "completionTokens": 1,
+      "latencyMs": 13,
+      "expectedUsd": "0.000013200",
+      "billedUsd": null
+    },
+    {
+      "tag": "fingerprint",
+      "source": "gateway",
+      "model": "openai/gpt-6-mini",
+      "respModel": "gpt-6-mini-2026-08-01",
+      "ok": true,
+      "promptTokens": 84,
+      "completionTokens": 1,
+      "latencyMs": 15,
+      "expectedUsd": "0.000013200",
+      "billedUsd": null
+    },
+    {
+      "tag": "fingerprint",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 67,
+      "completionTokens": 1,
+      "latencyMs": 15,
+      "expectedUsd": "0.000023850",
+      "billedUsd": null
+    },
+    {
+      "tag": "fingerprint",
+      "source": "gateway",
+      "model": "google/gemini-3.8-flash",
+      "respModel": "gemini-3.8-flash-001",
+      "ok": true,
+      "promptTokens": 67,
+      "completionTokens": 1,
+      "latencyMs": 12,
+      "expectedUsd": "0.000023850",
+      "billedUsd": null
+    }
+  ],
+  "narrative": null
+}

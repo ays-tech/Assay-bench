@@ -1,0 +1,30 @@
+{
+  "name": "assay",
+  "version": "0.1.0",
+  "description": "Verify the Orbio gateway, then pick the model: audits billing, identity and API behaviour with your own key, then benchmarks cheaper models on your own prompts.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "assay": "bin/assay.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "files": [
+    "bin",
+    "src",
+    "web",
+    "examples",
+    "README.md",
+    "PRODUCT.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node bin/assay.js serve",
+    "audit": "node bin/assay.js run",
+    "demo": "node bin/assay.js demo",
+    "test": "node scripts/test.js",
+    "check": "node --check bin/assay.js && node scripts/test.js",
+    "bench": "node bin/assay.js bench"
+  }
+}
