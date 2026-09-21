@@ -4,6 +4,15 @@
   "description": "Verify the Orbio gateway, then pick the model: audits billing, identity and API behaviour with your own key, then benchmarks cheaper models on your own prompts.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ays-tech/Assay-bench.git",
+    "directory": "assay"
+  },
+  "bugs": {
+    "url": "https://github.com/ays-tech/Assay-bench/issues"
+  },
+  "homepage": "https://github.com/ays-tech/Assay-bench#readme",
   "bin": {
     "assay": "bin/assay.js"
   },
