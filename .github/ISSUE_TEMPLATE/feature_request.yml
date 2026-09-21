@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest an improvement or a new check
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like Assay to do?
+      description: For a new check, say what it would prove and what it could not prove.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Project rules
+      options:
+        - label: This can be done with Node built-ins only (Assay has zero dependencies).
+          required: true

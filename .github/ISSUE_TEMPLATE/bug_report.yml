@@ -1,0 +1,54 @@
+name: Bug report
+description: Something in Assay does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Redact API keys and tokens** from anything you paste.
+        Security problems: do not use this form, see SECURITY.md.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: A reproduction with `assay demo` or the mock gateway (no key needed) is ideal.
+      placeholder: |
+        1. node bin/assay.js demo --fault overcharge
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or logs
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Assay version or commit
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Node version and OS
+      placeholder: Node 22.4, macOS 15
+    validations:
+      required: true
+  - type: dropdown
+    id: target
+    attributes:
+      label: Where did it happen?
+      options:
+        - Offline demo / mock gateway
+        - Real gateway
+        - Dashboard
+        - CLI
+    validations:
+      required: true

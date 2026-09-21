@@ -217,4 +217,12 @@ gross substitution), and cannot isolate gateway latency without a baseline key. 
 models behave on the prompts you gave it, and an LLM judge has its own biases: Bench reports how often the
 judge changed its pick when the order flipped. The dashboard's Method page says the same, on purpose.
 
-MIT licensed. Assay is an independent tool built for the Orbio agent hackathon and is not operated by Orbio.
+## Community
+
+- [Contributing](CONTRIBUTING.md): ground rules, setup and how to send a change
+- [Code of Conduct](CODE_OF_CONDUCT.md): how we treat each other
+- [Security policy](SECURITY.md): report vulnerabilities privately
+- [Support](SUPPORT.md): where to ask for help
+- [Changelog](CHANGELOG.md): what changed in each release
+
+MIT licensed ([LICENSE](LICENSE)). Assay is an independent tool built for the Orbio agent hackathon and is not operated by Orbio.
